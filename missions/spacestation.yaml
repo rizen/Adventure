@@ -1,0 +1,72 @@
+---
+name: Space Station
+locations:
+    cryo:
+        name: Cryosleep Chamber
+        items : []
+        actions : []
+        description : This is a cryosleep chamber. There are others like it, buty this one is yours.
+        initial description : You wake up inside the cramped confines of a cryosleep chamber.
+        exits : 
+            Out : medbay
+    medbay:
+        initial_desription : You drag your weakened body out of the cryosleep chamber. You are in the medical bay. Your cryosleep chamber is here. A hypo injector rests on a counter top. A turbo lift is here to transport you to the other levels of the space station.
+        description: You are in the medical bay. Your cryosleep chamber is here. A turbo lift is here to transport you to the other levels of the space station.
+        name: Medical Bay
+        look: 
+            Turbo Lift: A rapid transport tube big enough to hold several occupants.
+        exits:
+            Up: cyber
+            Down: engine
+            Enter Chamber: cryo
+        actions:
+            
+        items:
+            hypo3 : 1
+    sensor:
+        initial_description: You are in a narrow corridor filled with communications equipment. Cables and wires run from a sparking access panel down to the CPU core below decks. You see a note stuck to the panel.
+        exits:
+            Starboard: command
+        look:
+            Note: It's written in your handwriting. It reads: "Clean vanes every Thursday."
+        
+score: 0
+player:
+    inventory: []
+    startlocation: cryo
+    properties:
+        Strength : 0
+        Vertigo : 0
+items:
+    hypo3:
+        name: Full Hypo Injector
+        description: The hypo injector is used to administer medicine. Contains 3 doses of a strength enhancing serum used to remove the weakness stemming from prolonged cyrionic suspension. It does not cure vertigo or male pattern baldness.
+        actions : 
+            use : |+2
+                Adventure::Player->variable('Strength', 1);
+                Adventure->increment_score(5);
+                $self->mutate('hypo2');
+    hypo2:
+        name: Used Hypo Injector
+        description : The hypo injector is used to administer medicine. Contains 2 doses of a strength enhancing serum used to remove the weakness stemming from prolonged cyrionic suspension.
+        actions:
+            use : |+2
+                Adventure::Player->variable('Strength', 2);
+                Adventure::Player->variable('Time Hypo Used', time());
+                $self->mutate('hypo1');
+    hypo1:
+        name: Nearly Empty Hypo Injector
+        description : The hypo injector is used to administer medicine. Contains 1 dose of a strength enhancing serum used to remove the weakness stemming from prolonged cyrionic suspension.
+        actions : 
+            use : |+2
+                Adventure::Player->variable('Strength', 1);
+                $self->delete;
+                if (time() - Adventure::Player->variable('Time Hypo Used') < 60) {  
+                    Adventure->game_over('explodes');
+                }
+    accesspanel1:
+        name: Sparking Access Panel
+        description: There appears to be a short circuit in the signal receiver's wiring.
+        immovable: 1
+game over:
+    explodes: You explode.
