@@ -1,0 +1,4 @@
+severity = brutal
+verbose  = 8
+theme     = pbp
+exclude = Documentation::PodSpelling Documentation::RequirePodAtEnd Documentation::RequirePodSections ControlStructures::ProhibitPostfixControls RegularExpressions::RequireDotMatchAnything RegularExpressions::RequireExtendedFormatting RegularExpressions::RequireLineBoundaryMatching BuiltinFunctions::ProhibitStringyEval
