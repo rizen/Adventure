@@ -1,0 +1,4 @@
+[PerlTidy]
+select = {lib,t}/**/*.{pl,pm,t}
+select = *.{pl,pm,t}
+argv = --profile=$ROOT/.perltidyrc
