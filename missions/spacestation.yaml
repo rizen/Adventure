@@ -3,24 +3,75 @@ name: Space Station
 locations:
     cryo:
         name: Cryosleep Chamber
-        items : []
-        actions : []
         description : This is a cryosleep chamber. There are others like it, but this one is yours.
         initial description : You wake up inside the cramped confines of a cryosleep chamber.
-        exits : 
+        exits :
             Out : medbay
+    cyber:
+        name: Cybernetics Lab
+        description : You are in the cybernetics lab, surrounded by monitors, computer terminals and flashing lights. A turbo lift is here to transport you to the other levels of the space station.
+        initial description : You are in the cybernetics lab, surrounded by monitors, computer terminals and flashing lights. There is a set of microtools here. There is a robot here. A turbo lift is here to transport you to the other levels of the space station.
+        exits :
+            Up : command
+            Down : medbay
+            Starboard : cpu
+        items :
+            robot : 1,
+            microtools : 1,
+        look :
+            Computers : The computers are offline and will automatically reboot once the CPU core's temperature returns to normal levels.
+        aliases :
+            Monitors : Computers
+            Terminals : Computers
+    command:
+        name: Command Deck
+        description : The command deck is usually populated by the station's captain and crew, but it appears deserted. There is a communications terminal here. A turbolift is here to transport you to the other levels of the space station.
+        initial description : The command deck is usually populated by the station's captain and crew, but it appears deserted. There is a communications terminal here. There is a P.A.R.S.E.C. communications manual here. A turbolift is here to transport you to the other levels of the space station.
+        exits :
+            Up : cyber
+            Down : observation
+            Port : sensor
+        items :
+            manual : 1,
+        look :
+            Terminal : The communications terminal is used to send messages to ships docking with or leaving the space station. It is currently flashing a message: SYSTEM OFFLINE
+        aliases :
+            Communications Terminal : Terminal
+    sensor:
+        name: Sensor Array
+        description : The command deck is usually populated by the station's captain and crew, but it appears deserted. There is a communications terminal here. A turbolift is here to transport you to the other levels of the space station.
+        initial description : You are in a narrow corridor filled with communications equipment. Cables and wires run from a sparking access panel down to the CPU core below-decks. You see a note stuck to the panel.
+        exits :
+            Starboard : command
+        look :
+            Panel: There appears to be a short circuit in the signal receiver's wiring.
+            Note : It's written in your handwriting. It reads: TO DO: CLEAN VANES EVERY THURSDAY
+        aliases :
+            Access Panel : Panel
+    cpu:
+        name: CPU Core
+        description : This towering room houses the space station's CPU core. A ladder runs up the central spire, allowing computer technician's access to the core.
+        initial description : This towering room houses the space station's CPU core. A ladder runs up the central spire, allowing computer technician's access to the core, which is radiating intense heat.
+        exits :
+            Port : cyber
+        look :
+            CPU Core : The space station's brain and central nervous system is a massive column of processors and data storage units rising high above you. To keep heat at manageable levels, the CPU core is ringed with cooling vanes at varying levels.
+            Cooling Vanes : These alumninum alloy vanes are used to radiate heat away from the core. They are filthy with dust and grime, as if they haven't been cleaned for months.
+        aliases :
+            Vanes : Cooling Vanes
+            CPU: CPU Core
+            Core: CPU Core
     medbay:
         initial desription : You drag your weakened body out of the cryosleep chamber. You are in the medical bay. Your cryosleep chamber is here. A hypo injector rests on a counter top. A turbo lift is here to transport you to the other levels of the space station.
         description: You are in the medical bay. Your cryosleep chamber is here. A turbo lift is here to transport you to the other levels of the space station.
         name: Medical Bay
-        look: 
+        look:
             Turbo Lift: A rapid transport tube big enough to hold several occupants.
+            Cryosleep Chamber : This is a cryosleep chamber. There are others like it, but this one is yours.
         exits:
             Up: cyber
             Down: engine
             Enter Chamber: cryo
-        actions:
-            
         items:
             hypo3 : 1
     sensor:
@@ -29,7 +80,7 @@ locations:
             Starboard: command
         look:
             Note: It's written in your handwriting. It reads: "Clean vanes every Thursday."
-        
+
 score: 0
 
 player:
@@ -40,10 +91,16 @@ player:
         Vertigo : 0
 
 items:
+    microtools:
+        name: Microtools
+        description: These tools are used to repair malfunctioning electrical systems.
+    robot:
+        name: Robot
+        description: This dog-sized robot is used to perform repetitive or dangerous tasks unsuitable for humans. It mmoves about on tank treads and can carry and manipulate objects. The name F.R.O.Z. is laser etched into its skin.
     hypo3:
         name: Full Hypo Injector
         description: The hypo injector is used to administer medicine. Contains 3 doses of a strength enhancing serum used to remove the weakness stemming from prolonged cryonic suspension. It does not cure vertigo or male pattern baldness.
-        actions : 
+        actions :
             use : |+2
                 Adventure::Player->variable('Strength', 1);
                 Adventure->increment_score(5);
@@ -59,17 +116,25 @@ items:
     hypo1:
         name: Nearly Empty Hypo Injector
         description : The hypo injector is used to administer medicine. Contains 1 dose of a strength enhancing serum used to remove the weakness stemming from prolonged cryonic suspension.
-        actions : 
+        actions :
             use : |+2
                 Adventure::Player->variable('Strength', 1);
                 $self->delete;
-                if (time() - Adventure::Player->variable('Time Hypo Used') < 60) {  
+                if (time() - Adventure::Player->variable('Time Hypo Used') < 60) {
                     Adventure->game_over('explodes');
                 }
     accesspanel1:
         name: Sparking Access Panel
         description: There appears to be a short circuit in the signal receiver's wiring.
         immovable: 1
+    manual:
+        look : This three-ring binder contains the standard communications protocols for hailing friendly, neutral, and hostile alien life forms.
+        aliases :
+            P.A.R.S.E.C Manual : Manual
+            Communications Manual : Manual
+        actions :
+            Read : The text is dry and technical and causes you to nod off for a few seconds. In summmation, P.A.R.S.E.C. regulations mandate that an invading force must offer terms of surrender before launching a full-scale attack.
+
 
 game over:
     explodes: You explode.
