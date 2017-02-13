@@ -1,0 +1,271 @@
+---
+name: Action Castle
+locations:
+    cottage:
+        name: Cottage
+        initial description : You are standing in a small cottage. There is a fishing pole here.
+        description : You are standing in a small cottage.
+        items : fishpole
+        exits :
+            Out : gardenpath
+    gardenpath:
+        name: Garden Path
+        initial description : You are standing on a lush garden path. There is a rosebush here. There is a cottage here.
+        description : You are standing on a lush garden path. There is a rosebush here. There is a cottage here.
+        exits :
+            South : fishpond
+            North : windingpath
+            In : cottage
+        actors :
+            bush
+        aliases :
+            rosebush : bush
+    fishpond:
+        name: Fishing Pond
+        initial description : You are at the edge of a small fishing pond.
+        description : You are at the edge of a small fishing pond.
+        exits :
+            North : gardenpath
+        look :
+            pond : You see fish in the pond!
+        actions :
+            fish :
+                description: You catch a fish.
+                todo: can only catch one fish
+                aliases :
+                    catch fish
+                    use fishing pole
+                    go fishing
+    windingpath:
+        name: Winding Path
+        initial description : You are walking along a winding path. There is a tall tree here.
+        description : You are walking along a winding path. There is a tall tree here.
+        exits :
+            South : gardenpath
+            East : bridge
+            Up : tree
+        look:
+            tree : The tree is very tall with many branches.
+    tree:
+        name: Top of the Tall Tree
+        initial description : You are at the top of the tall tree. There is a stout, dead branch here.
+        description : You are at the top of the tall tree.
+        exits :
+            Down : windingpath
+        look:
+            tree : The tree is very tall with many branches.
+        items:
+            branch : 1,
+        actions:
+            jump :
+                description : Jumping would be suicide from this height.
+    bridge:
+        name: Draw Bridge
+        initial description : You are standing on one side of a drawbridge leading to Action Castle. There is a mean troll here.
+        description : You are standing on one side of a drawbridge leading to Action Castle.
+        exits :
+            West : windingpath
+            East : courtyard # blocked, think it probably should be dynamically added later when you defeat the troll
+        actors:
+            troll
+    courtyard:
+        name: Courtyard
+        initial description : You are standing in the courtyard of Action Castle. There is a guard here, blocking the path east.
+        description : You are standing on one side of a drawbridge leading to Action Castle.
+        exits :
+            West : bridge
+            East : hall # blocked, think it probably should be dynamically added later when you defeat the troll
+            Up : towerstairs
+            Down : dungeonstairs
+        actors:
+            guard
+    towerstairs:
+        name: Tower Stairs
+        initial description : You are climbing the stairs to the tower. There is a locked door here.
+        description : You are climbing the stairs to the tower. There is a locked door here.
+        exits :
+            Down : courtyard
+            Up : tower # blocked by locked door
+        actors:
+            door
+    tower:
+        name: Tower
+        initial description : You are inside a tower. The princess is here.
+        description : You are inside a tower. The princess is here.
+        exits :
+            Down : towerstairs
+        actors:
+            sadprincess
+    dugneonstairs:
+        name: Dungeon Stairs
+        initial description : Your are climbing the stairs down to the dungeon, it is too dark to see!
+        description : Your are climbing the stairs down to the dungeon!
+        look:
+            darkness : It is too dark to see.
+        aliases :
+            room : darkness
+            around : darkness
+        exits :
+            Up : courtyard
+            Down : dungeon # blocked by darkness
+    dungeon:
+        name: Dungeon
+        initial description : You are in the dungeon. There is a spooky ghost here.
+        description : You are in the dungeon.
+        exits :
+            Down : towerstairs
+        actors:
+            ghost
+    hall:
+        name: Great Feasting Hall
+        initial description : You stand inside the Great Feating Hall. There is a strange candle here.
+        description : You stand inside the Great Feating Hall.
+        exits :
+            West : courtyard
+            East : throne
+        items:
+            candle : 1
+    throne:
+        name : Throne Room
+        description: This is the throne room of Action Castle. There is an ornate golden throne here.
+        actors:
+            throne : 1
+actor:
+    throne:
+        name : Throne
+        description: An ornate golden throne.
+        actions:
+            sit (not royal) : You think better of it since you are not royalty.
+            sit (royal) : You sit on the ornate golden throne. The people cheer for the new ruler of Action Castle! Game over.
+    ghost:
+        name: Spooky Ghost
+        description: The ghost has bony, claw-like fingers, and wears a crown.
+        action :
+            use candle : The candle gives off a strange, acrid-smelling smoke. The ghost drops it's crown and flees.
+    sadprincess:
+        name: Princess
+        description: The princess is beautiful, sad, and lonely. She awates her prince.
+        talk :
+            generic: She looks sad, but says nothing.
+        actions :
+            kiss: She slaps you.
+            give rose : takes it and smiles, transform into happyprincess
+    happyprincess:
+        name: Princess
+        description: The princess is beautiful, happy, but lonely. She awates her prince.
+        talk :
+            generic : What would you like to talk about?
+            ghost : My father haunts the dungeon as a restless spirit.
+            crown : Only the rightful ehir to the thrown may wear it.
+            you / her : I cannot leave this tower until I am married.
+            throne : Only the king may sit on the throne.
+
+        actions :
+            kiss: She slaps you. "Not until we're wed!"
+            marry (no crown): "You're not royalty."
+            marry (has crown): "My father's crown! You have put his soul at rest and you may now succeed him! I accept." Places crown on your head. Set royalty = 1. Transform koguard to humbleguard. Change the description of the throne room to include revelers
+    queen:
+        name: Queen
+        description: The queen is beautiful, happy, and has found her king.
+        talk :
+            generic : What would you like to talk about?
+            throne : Only the king may sit on the throne.
+        actions :
+            kiss: *smooch*
+    door:
+        name: Locked Door
+        description: The guard is brandishing his short sword.
+        actions :
+            kick : that hurts
+            open : how?
+            open with key : remove door from towerstairs description, remove key, add up exit to tower stairs
+    guard:
+        name: Guard
+        description: The guard is brandishing his short sword.
+        actions :
+            fight :
+                description: The guard beats you to death.
+                aliases:
+                    attack
+                    punch
+            hit with branch : remove branch, switch to ko guard, add east exit to courtyard
+    koguard :
+        name : Incapacitated Guard
+        description : The guard has been knocked out.
+        items:
+            key : 1,
+        actions:
+            search : The guard has a key.
+            take sword : He's laying on it and is too heavy to move.
+    humbleguard :
+        name : Guard
+        description : The guard kneels before and hails you. Sire!
+    bush :
+        name : Bush
+        description: A rose bush with a single red rose.
+        items :
+            rose : 1,
+    troll:
+        name: Troll
+        description: A mean looking troll.
+        actions :
+            fight :
+                description: The troll beats you to death.
+                aliases:
+                    attack
+                    punch
+            give fish : if you give him the fish add the east exit to the bridge
+            hit with branch : if you try to hit him see "fight" above
+items:
+    candle :
+        name : Strange Candle
+        description : The candle is covered in strange runes.
+            actions:
+                read : The runes seem to be a spell of exorcism.
+    crown:
+        name : Crown
+        description: A golden crown fit for royalty.
+        actions:
+            wear: You wouldn't feel right wearing this crown since you are not royalty.
+
+    key:
+        name : Key
+        description: A small gold key.
+        actions:
+            unlock tower door : ok
+    fish:
+        name: Fish
+        description: You have a fish. It is raw.
+        actions:
+            eat :
+                description: You can't eat it. It is raw.
+            smell :
+                description: It smells fishy.
+    fishpole:
+        name: Fishing Pole
+        description: A simple fishing pole.
+    branch:
+        name: Branch
+        description: It is stout and dead.
+    unlitlamp:
+        name : Lamp
+        description: A small lamp. It is unlit.
+        actions:
+            light:
+                description: Lamp is now lit!
+                notes: add down exit to dungeon stairs, transform to "lamp"
+    lamp:
+        name : Lamp
+        description: A small lamp. It is lit.
+    rose:
+        name : Red Rose
+        description : A beautiful red rose.
+        actions:
+            smell :
+                description: It smells good.
+player:
+    inventory:
+        unlitlamp : 1,
+    startlocation: cottage
+    properties:
+        royalty : 0
