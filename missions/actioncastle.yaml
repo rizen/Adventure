@@ -3,42 +3,37 @@ name: Action Castle
 locations:
     cottage:
         name: Cottage
-        initial description : You are standing in a small cottage. There is a fishing pole here.
         description : You are standing in a small cottage.
         items : fishpole
         exits :
             Out : gardenpath
     gardenpath:
         name: Garden Path
-        initial description : You are standing on a lush garden path. There is a rosebush here. There is a cottage here.
-        description : You are standing on a lush garden path. There is a rosebush here. There is a cottage here.
+        description : You are standing on a lush garden path.
         exits :
             South : fishpond
             North : windingpath
             In : cottage
         actors :
             bush
-        aliases :
-            rosebush : bush
     fishpond:
         name: Fishing Pond
-        initial description : You are at the edge of a small fishing pond.
         description : You are at the edge of a small fishing pond.
         exits :
             North : gardenpath
         look :
             pond : You see fish in the pond!
+        properties :
+            caught_fish : 0
         actions :
             fish :
-                description: You catch a fish.
-                todo: can only catch one fish
+                code : GoFishing
                 aliases :
                     catch fish
                     use fishing pole
                     go fishing
     windingpath:
         name: Winding Path
-        initial description : You are walking along a winding path. There is a tall tree here.
         description : You are walking along a winding path. There is a tall tree here.
         exits :
             South : gardenpath
@@ -48,29 +43,32 @@ locations:
             tree : The tree is very tall with many branches.
     tree:
         name: Top of the Tall Tree
-        initial description : You are at the top of the tall tree. There is a stout, dead branch here.
         description : You are at the top of the tall tree.
         exits :
             Down : windingpath
         look:
             tree : The tree is very tall with many branches.
         items:
-            branch : 1,
+            branch : 1
         actions:
-            jump :
-                description : Jumping would be suicide from this height.
+            jump : Jumping would be suicide from this height.
     bridge:
         name: Draw Bridge
-        initial description : You are standing on one side of a drawbridge leading to Action Castle. There is a mean troll here.
         description : You are standing on one side of a drawbridge leading to Action Castle.
         exits :
             West : windingpath
-            East : courtyard # blocked, think it probably should be dynamically added later when you defeat the troll
+            East :
+                code : Blocked
+                params :
+                    destination : courtyard
+                    blocker : troll
+                    blocker_property : has_fish
+                    description : There is a mean troll in the way!
         actors:
             troll
     courtyard:
         name: Courtyard
-        initial description : You are standing in the courtyard of Action Castle. There is a guard here, blocking the path east.
+        long description : You are standing in the courtyard of Action Castle. There is a guard here, blocking the path east.
         description : You are standing on one side of a drawbridge leading to Action Castle.
         exits :
             West : bridge
@@ -81,7 +79,7 @@ locations:
             guard
     towerstairs:
         name: Tower Stairs
-        initial description : You are climbing the stairs to the tower. There is a locked door here.
+        long description : You are climbing the stairs to the tower. There is a locked door here.
         description : You are climbing the stairs to the tower. There is a locked door here.
         exits :
             Down : courtyard
@@ -90,7 +88,7 @@ locations:
             door
     tower:
         name: Tower
-        initial description : You are inside a tower. The princess is here.
+        long description : You are inside a tower. The princess is here.
         description : You are inside a tower. The princess is here.
         exits :
             Down : towerstairs
@@ -98,7 +96,7 @@ locations:
             sadprincess
     dugneonstairs:
         name: Dungeon Stairs
-        initial description : Your are climbing the stairs down to the dungeon, it is too dark to see!
+        long description : Your are climbing the stairs down to the dungeon, it is too dark to see!
         description : Your are climbing the stairs down to the dungeon!
         look:
             darkness : It is too dark to see.
@@ -110,7 +108,7 @@ locations:
             Down : dungeon # blocked by darkness
     dungeon:
         name: Dungeon
-        initial description : You are in the dungeon. There is a spooky ghost here.
+        long description : You are in the dungeon. There is a spooky ghost here.
         description : You are in the dungeon.
         exits :
             Down : towerstairs
@@ -118,7 +116,7 @@ locations:
             ghost
     hall:
         name: Great Feasting Hall
-        initial description : You stand inside the Great Feating Hall. There is a strange candle here.
+        long description : You stand inside the Great Feating Hall. There is a strange candle here.
         description : You stand inside the Great Feating Hall.
         exits :
             West : courtyard
@@ -130,7 +128,7 @@ locations:
         description: This is the throne room of Action Castle. There is an ornate golden throne here.
         actors:
             throne : 1
-actor:
+actors:
     throne:
         name : Throne
         description: An ornate golden throne.
@@ -162,6 +160,7 @@ actor:
 
         actions :
             kiss: She slaps you. "Not until we're wed!"
+            marry : DoMarryAction()
             marry (no crown): "You're not royalty."
             marry (has crown): "My father's crown! You have put his soul at rest and you may now succeed him! I accept." Places crown on your head. Set royalty = 1. Transform koguard to humbleguard. Change the description of the throne room to include revelers
     queen:
@@ -193,7 +192,7 @@ actor:
         name : Incapacitated Guard
         description : The guard has been knocked out.
         items:
-            key : 1,
+            key : 1
         actions:
             search : The guard has a key.
             take sword : He's laying on it and is too heavy to move.
@@ -201,13 +200,15 @@ actor:
         name : Guard
         description : The guard kneels before and hails you. Sire!
     bush :
-        name : Bush
-        description: A rose bush with a single red rose.
+        name : Rosebush
+        description: A rosebush with a single red rose.
         items :
-            rose : 1,
+            rose : 1
     troll:
         name: Troll
         description: A mean looking troll.
+        properties :
+            has_fish : 0
         actions :
             fight :
                 description: The troll beats you to death.
@@ -237,10 +238,8 @@ items:
         name: Fish
         description: You have a fish. It is raw.
         actions:
-            eat :
-                description: You can't eat it. It is raw.
-            smell :
-                description: It smells fishy.
+            eat : You can't eat it. It is raw.
+            smell : It smells fishy.
     fishpole:
         name: Fishing Pole
         description: A simple fishing pole.
@@ -264,6 +263,8 @@ items:
             smell :
                 description: It smells good.
 player:
+    each_turn :
+        - TrollRage
     inventory:
         unlitlamp : 1,
     startlocation: cottage
