@@ -68,35 +68,43 @@ locations:
             troll
     courtyard:
         name: Courtyard
-        long description : You are standing in the courtyard of Action Castle. There is a guard here, blocking the path east.
         description : You are standing on one side of a drawbridge leading to Action Castle.
         exits :
             West : bridge
-            East : hall # blocked, think it probably should be dynamically added later when you defeat the troll
+            East :
+                code : Blocked
+                params :
+                    destination : hall
+                    blocker : guard
+                    blocker_property : is_ko
+                    description : The guard brandishes his sword when you try to pass.
             Up : towerstairs
             Down : dungeonstairs
         actors:
             guard
     towerstairs:
         name: Tower Stairs
-        long description : You are climbing the stairs to the tower. There is a locked door here.
-        description : You are climbing the stairs to the tower. There is a locked door here.
+        description : You are climbing the stairs to the tower.
         exits :
             Down : courtyard
-            Up : tower # blocked by locked door
+            Up :
+                code : Blocked
+                params :
+                    destination : tower
+                    blocker : door
+                    blocker_property : is_unlocked
+                    description : The door is locked.
         actors:
             door
     tower:
         name: Tower
-        long description : You are inside a tower. The princess is here.
-        description : You are inside a tower. The princess is here.
+        description : You are inside a tower.
         exits :
             Down : towerstairs
         actors:
             sadprincess
     dugneonstairs:
         name: Dungeon Stairs
-        long description : Your are climbing the stairs down to the dungeon, it is too dark to see!
         description : Your are climbing the stairs down to the dungeon!
         look:
             darkness : It is too dark to see.
@@ -106,9 +114,16 @@ locations:
         exits :
             Up : courtyard
             Down : dungeon # blocked by darkness
+                code : Blocked
+                params :
+                    destination : dungeon
+                    blocker : darkness
+                    blocker_property : is_lit
+                    description : You cannot see well enough to go any further.
+        actors:
+            darkness
     dungeon:
         name: Dungeon
-        long description : You are in the dungeon. There is a spooky ghost here.
         description : You are in the dungeon.
         exits :
             Down : towerstairs
@@ -116,8 +131,7 @@ locations:
             ghost
     hall:
         name: Great Feasting Hall
-        long description : You stand inside the Great Feating Hall. There is a strange candle here.
-        description : You stand inside the Great Feating Hall.
+        description : You stand inside the Great Feasting Hall.
         exits :
             West : courtyard
             East : throne
@@ -125,9 +139,9 @@ locations:
             candle : 1
     throne:
         name : Throne Room
-        description: This is the throne room of Action Castle. There is an ornate golden throne here.
+        description: This is the throne room of Action Castle.
         actors:
-            throne : 1
+            throne
 actors:
     throne:
         name : Throne
@@ -204,6 +218,11 @@ actors:
         description: A rosebush with a single red rose.
         items :
             rose : 1
+    darkness :
+        name : Darkness
+        description: It is darker than the darkest of knights.
+        properties :
+            is_lit : 0
     troll:
         name: Troll
         description: A mean looking troll.
