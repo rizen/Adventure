@@ -2,7 +2,7 @@ package Adventure::Module::ActionCastle::Exit::Blocked;
 
 sub main {
     my ($game, $player, $params) = @_;
-    if ($game->actor($params->{blocker})->property($params->{blocker_property})) {
+    if ($player->location->property($params->{allow_property})) {
         return $params->{destination};
     }
     else {

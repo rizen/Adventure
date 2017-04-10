@@ -61,8 +61,7 @@ locations:
                 code : Blocked
                 params :
                     destination : courtyard
-                    blocker : troll
-                    blocker_property : has_fish
+                    allow_property : troll_fed
                     description : There is a mean troll in the way!
         actors:
             troll
@@ -75,8 +74,7 @@ locations:
                 code : Blocked
                 params :
                     destination : hall
-                    blocker : guard
-                    blocker_property : is_ko
+                    allow_property : guard_is_ko
                     description : The guard brandishes his sword when you try to pass.
             Up : towerstairs
             Down : dungeonstairs
@@ -91,8 +89,7 @@ locations:
                 code : Blocked
                 params :
                     destination : tower
-                    blocker : door
-                    blocker_property : is_unlocked
+                    allow_property : door_is_unlocked
                     description : The door is locked.
         actors:
             door
@@ -117,8 +114,7 @@ locations:
                 code : Blocked
                 params :
                     destination : dungeon
-                    blocker : darkness
-                    blocker_property : is_lit
+                    allow_property : dungeon_is_lit
                     description : You cannot see well enough to go any further.
         actors:
             darkness
@@ -196,20 +192,30 @@ actors:
         name: Guard
         description: The guard is brandishing his short sword.
         actions :
-            fight :
-                description: The guard beats you to death.
+            fight guard :
                 aliases:
                     attack
                     punch
-            hit with branch : remove branch, switch to ko guard, add east exit to courtyard
+                code : KillPlayer
+                params:
+                    description : The guard stabs you with his sword. You bleed out.
+            hit guard with branch :
+                code : HitWithBranch
+                aliases :
+                    whack guard with branch
     koguard :
         name : Incapacitated Guard
         description : The guard has been knocked out.
         items:
             key : 1
         actions:
-            search : The guard has a key.
-            take sword : He's laying on it and is too heavy to move.
+            take key from guard :
+                code : TakeItem
+                params :
+                    item : key
+                    quantity : 1
+            search guard: The guard has a key.
+            take sword from guard: He's laying on it and is too heavy to move.
     humbleguard :
         name : Guard
         description : The guard kneels before and hails you. Sire!
@@ -224,18 +230,26 @@ actors:
         properties :
             is_lit : 0
     troll:
-        name: Troll
-        description: A mean looking troll.
+        name: Mean Troll
+        description: The troll is warty, green, and hungry.
         properties :
             has_fish : 0
         actions :
-            fight :
-                description: The troll beats you to death.
+            fight troll :
                 aliases:
-                    attack
-                    punch
-            give fish : if you give him the fish add the east exit to the bridge
-            hit with branch : if you try to hit him see "fight" above
+                    attack troll
+                    punch troll
+                    kill troll
+                    hit troll with branch
+                code : KillPlayer
+                params:
+                    description : The troll beats you to death.
+            give troll fish : if you give him the fish add the east exit to the bridge
+                aliases:
+                    feed troll fish
+                    give fish to troll
+                    feed fish to troll
+                code : TrollIsFed
 items:
     candle :
         name : Strange Candle

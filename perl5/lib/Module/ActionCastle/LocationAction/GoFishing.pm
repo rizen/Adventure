@@ -1,4 +1,4 @@
-package Adventure::Module::ActionCastle::Action::GoFishing;
+package Adventure::Module::ActionCastle::LocationAction::GoFishing;
 
 sub main {
     my ($game, $player, $params) = @_;
