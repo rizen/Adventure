@@ -4,7 +4,8 @@ locations:
     cottage:
         name: Cottage
         description : You are standing in a small cottage.
-        items : fishpole
+        items :
+            fishpole : 1
         exits :
             Out : gardenpath
     gardenpath:
@@ -15,7 +16,7 @@ locations:
             North : windingpath
             In : cottage
         actors :
-            bush
+            - bush
     fishpond:
         name: Fishing Pond
         description : You are at the edge of a small fishing pond.
@@ -29,9 +30,9 @@ locations:
             fish :
                 code : GoFishing
                 aliases :
-                    catch fish
-                    use fishing pole
-                    go fishing
+                    - catch fish
+                    - use fishing pole
+                    - go fishing
     windingpath:
         name: Winding Path
         description : You are walking along a winding path. There is a tall tree here.
@@ -64,7 +65,7 @@ locations:
                     allow_property : troll_fed
                     description : There is a mean troll in the way!
         actors:
-            troll
+            - troll
     courtyard:
         name: Courtyard
         description : You are standing on one side of a drawbridge leading to Action Castle.
@@ -79,7 +80,7 @@ locations:
             Up : towerstairs
             Down : dungeonstairs
         actors:
-            guard
+            - guard
     towerstairs:
         name: Tower Stairs
         description : You are climbing the stairs to the tower.
@@ -92,39 +93,39 @@ locations:
                     allow_property : door_is_unlocked
                     description : The door is locked.
         actors:
-            door
+            - door
     tower:
         name: Tower
         description : You are inside a tower.
         exits :
             Down : towerstairs
         actors:
-            sadprincess
-    dugneonstairs:
+            - sadprincess
+    dungeonstairs:
         name: Dungeon Stairs
         description : Your are climbing the stairs down to the dungeon!
         look:
             darkness : It is too dark to see.
         aliases :
-            room : darkness
-            around : darkness
+            - room
+            - around
         exits :
             Up : courtyard
-            Down : dungeon # blocked by darkness
+            Down :
                 code : Blocked
                 params :
                     destination : dungeon
                     allow_property : dungeon_is_lit
                     description : You cannot see well enough to go any further.
         actors:
-            darkness
+            - darkness
     dungeon:
         name: Dungeon
         description : You are in the dungeon.
         exits :
             Down : towerstairs
         actors:
-            ghost
+            - ghost
     hall:
         name: Great Feasting Hall
         description : You stand inside the Great Feasting Hall.
@@ -137,7 +138,7 @@ locations:
         name : Throne Room
         description: This is the throne room of Action Castle.
         actors:
-            throne
+            - throne
 actors:
     throne:
         name : Throne
@@ -171,8 +172,8 @@ actors:
         actions :
             kiss: She slaps you. "Not until we're wed!"
             marry : DoMarryAction()
-            marry (no crown): "You're not royalty."
-            marry (has crown): "My father's crown! You have put his soul at rest and you may now succeed him! I accept." Places crown on your head. Set royalty = 1. Transform koguard to humbleguard. Change the description of the throne room to include revelers
+            #marry (no crown): "You're not royalty."
+            #marry (has crown): "My father's crown! You have put his soul at rest and you may now succeed him! I accept." Places crown on your head. Set royalty = 1. Transform koguard to humbleguard. Change the description of the throne room to include revelers
     queen:
         name: Queen
         description: The queen is beautiful, happy, and has found her king.
@@ -180,7 +181,7 @@ actors:
             generic : What would you like to talk about?
             throne : Only the king may sit on the throne.
         actions :
-            kiss: *smooch*
+            kiss: \*smooch\*
     door:
         name: Locked Door
         description: The guard is brandishing his short sword.
@@ -194,15 +195,15 @@ actors:
         actions :
             fight guard :
                 aliases:
-                    attack
-                    punch
+                    - attack
+                    - punch
                 code : KillPlayer
                 params:
                     description : The guard stabs you with his sword. You bleed out.
             hit guard with branch :
                 code : HitWithBranch
                 aliases :
-                    whack guard with branch
+                    - whack guard with branch
     koguard :
         name : Incapacitated Guard
         description : The guard has been knocked out.
@@ -237,25 +238,25 @@ actors:
         actions :
             fight troll :
                 aliases:
-                    attack troll
-                    punch troll
-                    kill troll
-                    hit troll with branch
+                    - attack troll
+                    - punch troll
+                    - kill troll
+                    - hit troll with branch
                 code : KillPlayer
                 params:
                     description : The troll beats you to death.
-            give troll fish : if you give him the fish add the east exit to the bridge
+            give troll fish :
                 aliases:
-                    feed troll fish
-                    give fish to troll
-                    feed fish to troll
+                    - feed troll fish
+                    - give fish to troll
+                    - feed fish to troll
                 code : TrollIsFed
 items:
     candle :
         name : Strange Candle
         description : The candle is covered in strange runes.
-            actions:
-                read : The runes seem to be a spell of exorcism.
+        actions:
+            read : The runes seem to be a spell of exorcism.
     crown:
         name : Crown
         description: A golden crown fit for royalty.
@@ -298,8 +299,8 @@ items:
 player:
     each_turn :
         - TrollRage
-    inventory:
+    items:
         unlitlamp : 1,
-    startlocation: cottage
+    location: cottage
     properties:
         royalty : 0
