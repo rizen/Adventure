@@ -8,6 +8,21 @@ use Adventure::Location;
 use Adventure::Player;
 use YAML;
 
+use 5.010_000;
+
+use mro     ();
+use feature ();
+use utf8    ();
+
+sub import {
+    warnings->import();
+    warnings->unimport( qw/uninitialized/ );
+    strict->import();
+    feature->import( ':5.10' );
+    mro::set_mro( scalar caller(), 'c3' );
+    utf8->import();
+}
+
 my $_config = {};
 sub config {
     return $_config;
@@ -106,22 +121,6 @@ Adventure - Standardize what Perl configuration Adventure uses.
 
 =cut
 
-use 5.010_000;
 
-use strict;
-use warnings;
-
-use mro     ();
-use feature ();
-use utf8    ();
-
-sub import {
-    warnings->import();
-    warnings->unimport( qw/uninitialized/ );
-    strict->import();
-    feature->import( ':5.10' );
-    mro::set_mro( scalar caller(), 'c3' );
-    utf8->import();
-}
 
 1;
