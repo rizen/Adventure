@@ -17,10 +17,26 @@ after init => sub {
     warn 'Need to implement LOCATION on Player';
 };
 
+has score => (
+    is  => 'rw',
+    default => 0,
+);
+
 sub announce {
     my ($self, $text) = @_;
     say $text;
 }
 
+sub kill {
+    my $self = shift;
+    $self->announce('Game Over');
+    $self->display_score();
+    exit;
+}
+
+sub display_score {
+    my $self = shift;
+    $self->announce('Score: '.$self->score);
+}
 
 1;
