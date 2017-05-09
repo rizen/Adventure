@@ -17,8 +17,10 @@ sub init {
         }
         if (exists $config->{code}) {
             my $code = $config->{code};
-            warn "Must implement code loading. Would have executed: ".$code;
-            # $code->($config->{params});
+            before perform => sub {
+                warn "Must implement code loading. Would have executed: ".$code;
+                # $code->($config->{params});
+            };
         }
     }
     else {
