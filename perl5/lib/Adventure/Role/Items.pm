@@ -20,10 +20,15 @@ sub add_item {
     my ($self, $key, $quantity) = @_;
     $quantity ||= 1;
     if (exists $self->items->{$key}) {
-        $self->items->{$key} += $quantity;        
+        $self->items->{$key} += $quantity;
     }
     else {
-        $self->items->{$key} = $quantity;
+        if (exists Adventure->items->{$key}) {
+            $self->items->{$key} = $quantity;
+        }
+        else {
+            die "No such item exists: $key";
+        }
     }
 }
 
