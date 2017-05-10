@@ -3,7 +3,7 @@
 ########################################################################
 
 package Chewzy::Test;
-use v5.24;
+use v5.10;
 use autodie;
 use FindBin::libs;
 
