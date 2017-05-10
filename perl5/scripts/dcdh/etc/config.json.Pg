@@ -1,0 +1,16 @@
+# config-file-type: JSON 1
+{
+    "db" : [
+       "DBI:Pg:dbname=music",
+       "devel",
+       "devel",
+       {
+	 "AutoCommit" : 1
+       }, 
+       {
+	 "RaiseError" : 1
+       }
+    ],
+    "dbvendor" : "PostgreSQL",
+    "ProjSchema" : "Music::Schema",
+}

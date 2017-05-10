@@ -1,0 +1,16 @@
+# config-file-type: JSON 1
+{
+    "db" : [
+       "DBI:mysql:database=music",
+       "devel",
+       "!S0Me#P%ss",
+       {
+          "mysql_enable_utf8" : 1
+       },
+       {
+          "quote_names" : 1
+       }
+    ],
+    "dbvendor" : "MySQL",
+    "ProjSchema" : "Music::Schema",
+}
