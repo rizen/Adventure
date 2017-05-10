@@ -1,0 +1,77 @@
+JT Smith's DBIx::Class:DeploymentHandler scripts
+
+Execute all scripts from the project home directory
+ex: 
+   $ perl scripts/dcdh/01_prepare_init.pl
+
+etc/config.json contains
+  db handle info, db vendor and DBIx::Class schema name
+
+scripts/dcdh
+   Create SQL from schema definition to define inital database
+	01_prepare_init.pl
+   Apply SQL from schema definition to define inital database
+	02_init.pl
+   Create SQL from new version of schema definition
+	03_prepare_upgrade.pl
+   Apply SQL from new version of schema definition
+	04_upgrade.pl
+   Back out lastest database changes
+	05_downgrade.pl
+---
+
+CPAN
+   Moose
+   DBIx::Class
+   DBIx::Class::DeploymentHandler
+   Config::JSON
+   Getopt::Long
+   Data::Dumper
+
+MySQL
+   sudo apt-get update
+   sudo apt-get install mysql-server
+   sudo apt-get install libmysqlclient-dev
+   sudo mysql_secure_installation
+   cpanm DBD::mysql
+
+sqlite3
+   sudo apt-get update
+   sudo apt-get install sqlite3	
+   sudo apt-get install libdbd-sqlite3-perl 
+   cpanm DBD::SQLite
+
+
+Postgres
+   sudo apt-get update
+   sudo apt-get install postgresql
+   sudo apt-get install postgresql-contrib
+   sudo apt-get install libdbd-pg-perl
+   sudo apt-get install libpq-dev
+   cpanm DBD::Pg
+
+---
+.
+├── 01_prepare_init.pl
+├── 02_init.pl
+├── 03_prepare_upgrade.pl
+├── 04_upgrade.pl
+├── 05_downgrade.pl
+├── cpanfile
+├── README
+├── restart.sh
+├── doc
+│   ├── setup-mysql.sql
+│   ├── setup-pg.txt
+│   └── SQLite_Alter_table_error.txt
+├── etc
+│   ├── config.json
+│   ├── config.json.mysql
+│   ├── config.json.Pg
+│   └── config.json.sqlite
+├── ex
+│   ├── add_album.pl
+│   ├── add_artist.pl
+│   └── insert_stuff.sh
+└── upgrades
+

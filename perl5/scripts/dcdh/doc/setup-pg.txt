@@ -1,0 +1,8 @@
+$ sudo -i -u postgres
+$ createuser --interactive
+    Enter name of role to add: devel
+    Shall the new role be a superuser? (y/n) y
+$ createdb music
+$ exit
+
+$ sudo adduser devel

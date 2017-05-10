@@ -1,0 +1,12 @@
+04_upgrade.pl
+
+Had issues adding
+    title    => { data_type => 'text', is_nullable => 1 },
+to lib/Music/Schema/Result/Album.pm
+
+DBD::SQLite::db do failed: Cannot add a NOT NULL column with default value NULL 
+
+ALTER TABLE albums ADD COLUMN label text NOT NULL
+
+Changed it to
+    title    => { data_type => 'text', is_nullable => 0 },

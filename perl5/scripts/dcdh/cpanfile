@@ -1,0 +1,9 @@
+Moose
+DBIx::Class
+DBIx::Class::DeploymentHandler
+Config::JSON
+Getopt::Long
+Data::Dumper
+DBD::mysql
+DBD::SQLite
+DBD::Pg

@@ -1,0 +1,10 @@
+# config-file-type: JSON 1
+{
+    "db" : [
+       "DBI:SQLite:dbname=db/music.db",
+       "",
+       "",
+    ],
+    "dbvendor" : "SQLite",
+    "ProjSchema" : "Music::Schema",
+}
