@@ -74,13 +74,13 @@ sub init {
     $class->add_items($_config->{items});
     $class->add_actors($_config->{actors});
     $class->add_locations($_config->{locations});
-    $class->add_player($_config->{player});
+    $class->add_player('player1', $_config->{player});
 }
 
 sub add_player {
     my ($class, $key, $config) = @_;
     $_player = Adventure::Player->new;
-    $_player->init('player1', $config);
+    $_player->init($key, $config);
 }
 
 sub add_locations {

@@ -14,8 +14,13 @@ after init => sub {
     my ($self, $key, $config) = @_;
     $self->add_aliases(['self','myself']);
     warn 'Need to implement EACH_TURN on Player';
-    warn 'Need to implement LOCATION on Player';
+    $self->location($config->{location});
 };
+
+has location => (
+    is          => 'rw',
+    default     => sub {undef},
+);
 
 has score => (
     is  => 'rw',
