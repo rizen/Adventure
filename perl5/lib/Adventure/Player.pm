@@ -22,6 +22,11 @@ has location => (
     default     => sub {undef},
 );
 
+sub location_object {
+    my $self = shift;
+    return Adventure->location($self->location);
+}
+
 has score => (
     is  => 'rw',
     default => 0,
