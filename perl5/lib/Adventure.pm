@@ -37,14 +37,29 @@ sub locations {
     return $_locations;
 }
 
+sub location {
+    my ($class, $id) = @_;
+    return $_locations->{$id};
+}
+
 my $_items = {};
 sub items {
     return $_items;
 }
 
+sub item {
+    my ($class, $id) = @_;
+    return $_items->{$id};
+}
+
 my $_actors = {};
 sub actors {
     return $_actors;
+}
+
+sub actor {
+    my ($class, $id) = @_;
+    return $_actors->{$id};
 }
 
 my $_player = {};
