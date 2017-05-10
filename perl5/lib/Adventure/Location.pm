@@ -20,9 +20,34 @@ after init => sub {
             die "$key actors must be an array";
         }
     }
-    warn "need to implement EXITS for $key.";
+    my ($self, $key, $config) = @_;
+    if (ref $config eq 'HASH' && exists $config->{exits}) {
+        if (ref $config->{exits} eq 'HASH') {
+            $self->add_exits($config->{exits});
+        }
+        else {
+            die "$key exits must be a hash";
+        }
+    }
 };
 
+has exits => (
+    is          => 'rw',
+    default     => sub { {} },
+);
+
+sub add_exits {
+    my ($self, $exits) = @_;
+    foreach my $key (keys %{$exits}) {
+        $self->add_exit($key, $exits->{$key});
+    }
+}
+
+sub add_exit {
+    my ($self, $key, $location) = @_;
+    $self->exits->{$key} = $location;
+    # need to add code plugins for location exits
+}
 
 has actors => (
     is          => 'rw',
