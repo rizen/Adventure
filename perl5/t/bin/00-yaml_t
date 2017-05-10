@@ -1,0 +1,66 @@
+########################################################################
+# housekeeping
+########################################################################
+
+package Chewzy::Test;
+use v5.24;
+use autodie;
+use FindBin::libs;
+
+use File::Basename;
+use Test::More;
+
+use YAML::XS    qw( Load );
+
+########################################################################
+# package variables
+########################################################################
+
+my $dir     = dirname $0;
+my $base    = basename $0, '.t';
+
+########################################################################
+# run the tests
+########################################################################
+
+# get the relative paths in place.
+
+chdir $dir;
+
+$base   =~ s{^ \d+\D }{}x;
+
+my $path        = join '/' => '..', split '~' => $base;
+
+SKIP:
+{
+    skip "Non-existant: '$path'", 1
+    unless -e $path;
+    
+    eval
+    {
+
+        -r $path    or die "Non-readable: '$path'";
+        -s _        or die "Zero-size: '$path'";
+
+        my $yaml
+        = do
+        {
+            open my $fh, '<', $path 
+            or die "Open: '$path' ($!)";
+
+            local $/;
+            readline $fh;
+        };
+
+        Load $yaml;
+
+        pass "Yaml Loads: '$path'";
+
+        1
+    }
+    or fail $@;
+}
+
+done_testing
+
+__END__

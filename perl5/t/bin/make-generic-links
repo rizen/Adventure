@@ -1,0 +1,33 @@
+#!/bin/bash
+
+cd $(dirname $0)/..;
+
+rm -f 0*.t;
+
+i='-1';
+
+for glob in '*.yaml' '*.pm'
+do
+    export j="0$((++i))";
+
+    echo "Pass: $j";
+    ls ./bin/$j-*_t;
+
+    # i.e., find everything like the glob, symlink them to
+    # standard tests by type in ./t/bin/.
+    # 
+    # replacing '/' => '~' to get a working basename and
+    # adding the prefix ($j) and suffix of ".t".
+    #
+    # substr removes the "lib/" or "etc/".
+
+    find .. -name $glob                                     |
+    perl -n                                                 \
+    -E 'state $path = ( glob "./bin/$ENV{j}-*_t" )[0];'     \
+    -E 'chomp;'                                             \
+    -E 'my @a = split m{[/]}, substr $_, 3;'                \
+    -E 'my $b = join "~", @a;'                              \
+    -E 'symlink $path => "$ENV{j}-$b.t" or warn'            ;
+done
+
+exit 0;
