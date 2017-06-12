@@ -137,6 +137,8 @@ locations:
     throne:
         name : Throne Room
         description: This is the throne room of Action Castle.
+        exits :
+            West : hall
         actors:
             - throne
 actors:
