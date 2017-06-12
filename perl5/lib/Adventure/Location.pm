@@ -20,7 +20,6 @@ after init => sub {
             die "$key actors must be an array";
         }
     }
-    my ($self, $key, $config) = @_;
     if (ref $config eq 'HASH' && exists $config->{exits}) {
         if (ref $config->{exits} eq 'HASH') {
             $self->add_exits($config->{exits});
