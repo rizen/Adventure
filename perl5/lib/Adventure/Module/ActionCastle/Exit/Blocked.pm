@@ -24,14 +24,14 @@ The key name of the L<Adventure::Location> where the player should end up if the
 
 =item description
 
-The message to send if the player does not yet have the C<allow_property> set. 
+The message to send if the player does not yet have the C<allow_property> set.
 
 =back
 
 =cut
 
 sub main {
-    my ($game, $params) = @_;
+    my ($class, $params) = @_;
     if (Adventure::Player->location->property($params->{allow_property})) {
         return $params->{destination};
     }

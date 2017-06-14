@@ -44,20 +44,30 @@ sub add_exits {
 
 sub add_exit {
     my ($self, $key, $location) = @_;
-    $self->exits->{$key} = $location;
+    if (ref $location eq 'HASH') {
+        my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Exit::'.$location->{code};
+        eval "use $module;";
+        if ($@) {
+            die $@;
+        }
+        $self->exits->{$key} = sub { $module->main($location->{params}) };
+    }
+    else {
+        $self->exits->{$key} = sub { return $location };
+    }
     # need to add code plugins for location exits
     # could use any of the following:
     #   - Perl's "require" statement
     #   - Module::Load
     #   - Plugin::Tiny
     #   - something else?
-
+    #
     # we've defined 2 types:
-
+    #
     # TYPE 1: Static
     # location : scalar representing the name of another location
-
-
+    #
+    #
     # TYPE 2: Dynamic
     # location: hash reference containing info to load a module
     #   code: a module name, example: see Adventure::Module::ActionCastle::Exit::Blocked
@@ -65,13 +75,13 @@ sub add_exit {
     #       allow_property: property on the player that needs to be set to pass
     #       destination: the key name of the place to put the player if they can pass
     #       description: the NO message
-
+    #
 
 }
 
 sub available_exits {
     my $self = shift;
-    return keys %{$self->exits};
+    return [keys %{$self->exits}];
 }
 
 sub use_exit {

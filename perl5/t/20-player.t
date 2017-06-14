@@ -14,10 +14,11 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'cottage', 'is the player at the cottage';
 
-    #my $location = Adventure->location($player->location);
-    #my $location = $player->location_object;
-
     isa_ok($player->location_object, 'Adventure::Location', 'player can get its location object');
+
+    $player->location_object->use_exit('Out');
+
+    cmp_ok $player->location, 'eq', 'gardenpath', 'is the player at the garden path';
 
 };
 

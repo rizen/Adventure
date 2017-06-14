@@ -1,5 +1,6 @@
 ---
 name: Action Castle
+namespace : ActionCastle
 locations:
     cottage:
         name: Cottage
