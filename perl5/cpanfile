@@ -1,1 +1,0 @@
-requires 'FindBin::libs', '2.12';
