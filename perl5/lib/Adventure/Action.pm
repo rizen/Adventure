@@ -20,16 +20,16 @@ has perform_actions => (
 sub init {
     my ($self, $key, $config) = @_;
     if (ref $config eq 'HASH') {
-        # if (exists $config->{code}) {
-        #     before perform => sub {
-        #         my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Action::'.$config->{code};
-        #         eval "use $module;";
-        #         if ($@) {
-        #             die $@;
-        #         }
-        #         $module->main($config->{params});
-        #     };
-        # }
+        if (exists $config->{code}) {
+            push @{$self->perform_actions}, sub {
+                my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Action::'.$config->{code};
+                eval "use $module;";
+                if ($@) {
+                    die $@;
+                }
+                $module->main($config->{params});
+            };
+        }
         if (exists $config->{description}) {
             push @{$self->perform_actions}, sub {
                 Adventure->player->announce($config->{description});

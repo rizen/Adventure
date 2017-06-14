@@ -111,6 +111,20 @@ sub add_item {
     $class->items->{$key} = $item;
 }
 
+sub available_items {
+    my $self = shift;
+    return [keys $self->items];
+}
+
+sub item_exists {
+    my ($self, $item) = @_;
+    my $items = $self->available_items;
+    if ($item ~~ $items) {
+        return 1;
+    }
+    return 0;
+}
+
 sub add_actors {
     my ($class, $actors) = @_;
     foreach my $key (keys %{$actors}) {
