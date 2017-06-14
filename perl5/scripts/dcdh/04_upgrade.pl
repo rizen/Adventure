@@ -8,7 +8,6 @@ use feature 'say';
 use lib 'lib';
 use Carp 'croak';
 
-use Music::Schema;
 use DBIx::Class::DeploymentHandler;
 use Config::JSON;
 
