@@ -89,10 +89,10 @@ sub use_exit {
     my $available = $self->available_exits;
     if ($exit ~~ $available) {
         my $code = $self->exits->{$exit};
-        $code->();
+        Adventure->player->location($code->());
     }
     else {
-        Adventure::Player->announce('There is no exit named '.$exit.'.');
+        Adventure->player->announce('There is no exit named '.$exit.'.');
     }
 }
 
