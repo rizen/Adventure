@@ -36,4 +36,21 @@ after init => sub {
     }
 };
 
+sub available_actions {
+    my $self = shift;
+    return [keys %{$self->actions}];
+}
+
+sub use_action {
+    my ($self, $action) = @_;
+    my $available = $self->available_actions;
+    if ($action ~~ $available) {
+        my $object = $self->actions->{$action};
+        $object->perform;
+    }
+    else {
+        Adventure->player->announce('There is no action named '.$action.'.');
+    }
+}
+
 1;

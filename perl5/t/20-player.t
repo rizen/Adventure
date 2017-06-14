@@ -20,6 +20,13 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'gardenpath', 'is the player at the garden path';
 
+    $player->location_object->use_exit('North');
+    $player->location_object->use_exit('Up');
+
+    cmp_ok $player->location, 'eq', 'tree', 'is the player in the tree';
+
+    $player->location_object->use_action('jump');
+
 };
 
 

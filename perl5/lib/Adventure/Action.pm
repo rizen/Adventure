@@ -16,10 +16,13 @@ sub init {
             };
         }
         if (exists $config->{code}) {
-            my $code = $config->{code};
             before perform => sub {
-                warn "Must implement code loading. Would have executed: ".$code;
-                # $code->($config->{params});
+                my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::ActorAction::'.$config->{code};
+                eval "use $module;";
+                if ($@) {
+                    die $@;
+                }
+                $module->main($config->{params});
             };
         }
     }
@@ -27,6 +30,21 @@ sub init {
         after perform => sub {
             Adventure->player->announce($config);
         };
+    }
+}
+
+sub add_exit {
+    my ($self, $key, $location) = @_;
+    if (ref $location eq 'HASH') {
+        my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Exit::'.$location->{code};
+        eval "use $module;";
+        if ($@) {
+            die $@;
+        }
+        $self->exits->{$key} = sub { $module->main($location->{params}) };
+    }
+    else {
+        $self->exits->{$key} = sub { return $location };
     }
 }
 
