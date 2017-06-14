@@ -5,29 +5,39 @@ use Moo;
 extends 'Adventure::Base';
 with 'Adventure::Role::Aliases';
 
-sub perform {}
+sub perform {
+    my $self = shift;
+    foreach my $action (@{$self->perform_actions}) {
+        $action->();
+    }
+}
+
+has perform_actions => (
+    is      => 'rw',
+    default => sub { [] },
+);
 
 sub init {
     my ($self, $key, $config) = @_;
     if (ref $config eq 'HASH') {
+        # if (exists $config->{code}) {
+        #     before perform => sub {
+        #         my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Action::'.$config->{code};
+        #         eval "use $module;";
+        #         if ($@) {
+        #             die $@;
+        #         }
+        #         $module->main($config->{params});
+        #     };
+        # }
         if (exists $config->{description}) {
-            after perform => sub {
+            push @{$self->perform_actions}, sub {
                 Adventure->player->announce($config->{description});
-            };
-        }
-        if (exists $config->{code}) {
-            before perform => sub {
-                my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::ActorAction::'.$config->{code};
-                eval "use $module;";
-                if ($@) {
-                    die $@;
-                }
-                $module->main($config->{params});
             };
         }
     }
     else {
-        after perform => sub {
+        push @{$self->perform_actions}, sub {
             Adventure->player->announce($config);
         };
     }
