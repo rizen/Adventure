@@ -1,7 +1,7 @@
 package Adventure::Module::ActionCastle::Action::TakeItem;
 
 sub main {
-    # my ($class, $params) = @_;
+    # my ($class, $thing_that_has_object, $params) = @_;
     # if (Adventure->item_exists($params->{item})) {
     #     if (Adventure->actor->has_item($params->{item}, $params->{quantity})) {
     #         Adventure->actor->remove_item($params->{item}, $params->{quantity});
