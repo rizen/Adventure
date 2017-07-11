@@ -113,7 +113,7 @@ sub add_item {
 
 sub available_items {
     my $self = shift;
-    return [keys $self->items];
+    return [keys %{$self->items} ];
 }
 
 sub item_exists {
