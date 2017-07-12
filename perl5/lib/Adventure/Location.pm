@@ -47,11 +47,13 @@ sub add_exits {
 sub add_exit {
     my ($self, $key, $location) = @_;
     if (ref $location eq 'HASH') {
-        my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Exit::'.$location->{code};
-        eval "use $module;";
-        if ($@) {
-            die $@;
-        }
+       my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Exit::'.$location->{code};
+       #        eval "use $module;";
+       #        if ($@) {
+       #            die $@;
+       #        }
+       Adventure::Adv_Add_Plugin( $module );
+
         $self->exits->{$key} = sub { $module->main($location->{params}) };
     }
     else {

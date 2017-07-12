@@ -139,6 +139,14 @@ sub add_actor {
     $class->actors->{$key} = $actor;
 }
 
+sub Adv_Add_Plugin {
+    my ($module) = @_;
+    eval "use $module;";
+    if ($@) { die $@; }
+    return;
+}
+
+
 =head1 NAME
 
 Adventure - Standardize what Perl configuration Adventure uses.
