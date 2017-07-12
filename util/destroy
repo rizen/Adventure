@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Destroying Adventure!";
+docker-compose -f docker-compose.yml down;

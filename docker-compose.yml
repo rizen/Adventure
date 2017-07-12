@@ -1,0 +1,43 @@
+version: '2'
+services:
+  adventure:
+    build: .
+    hostname: adventure
+    environment:
+      - DBNAME=dbname
+      - DBUSER=dbuser
+      - DBPASS=dbpass
+      - DBHOST=dbhost
+      - DBPORT=27017
+    container_name: 'adventure'
+    ports:
+      - '5000:5000'
+    volumes:
+      - '.:/opt/src'
+    networks:
+      - app
+    #links:
+    #  - 'database-container:database-container'
+    #entrypoint: /opt/src/build/run
+    #depends_on:
+    #  - database-container
+
+  #database-container:
+  #  hostname: dbhostname
+  #  container_name: database-container
+  #  image: mongo:latest
+  #  networks:
+  #    - app
+  #  ports:
+  #    - '27017:27017'
+  #  volumes:
+  #    - mongodb-storage:/data/mongo
+
+volumes:
+  mongodb-storage: 
+
+networks:
+  default:
+    driver: bridge
+  app:
+    driver: bridge
