@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Starting Adventure!";
+docker-compose -f docker-compose.yml up -d;
