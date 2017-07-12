@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More;
+use Test::Most;
 use FindBin::libs;
 
 use_ok('Adventure');
@@ -34,18 +34,32 @@ subtest 'move' => sub {
     cmp_ok $player->has_item('branch'), '==', 0, 'player does not have branch';
     cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree has branch';
 
-    eval {
+#    eval {
+#        $player->location_object->put_item('nosuchobject', $player);
+#    }; # todo use throws_ok
+#    ok $@, 'it failed on an invalid item';
+    throws_ok {
         $player->location_object->put_item('nosuchobject', $player);
-    }; # todo use throws_ok
-    ok $@, 'it failed on an invalid item';
+    }
+    qr//,
+    'it failed on an invalid item';
 
-    eval {
-        $player->location_object->put_item('branch', '');
-    };
-    ok $@, 'it failed on an invalid object';
+#    eval {
+#        $player->location_object->put_item('branch', '');
+#    };
+#    ok $@, 'it failed on an invalid object';
+    throws_ok {
+       $player->location_object->put_item('branch', '');
+    }
+    qr//,
+    'it failed on an invalid object';
+
     cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree still has branch';
 
-    $player->location_object->put_item('branch', $player);
+    lives_ok {
+       $player->location_object->put_item('branch', $player);
+    }
+    'Associate the branch with player';
 
     cmp_ok $player->has_item('branch'), '==', 1, 'player has branch';
     cmp_ok $player->location_object->has_item('branch'), '==', 0, 'tree does not have branch';
