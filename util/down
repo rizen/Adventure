@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Stopping Adventure :(";
+docker-compose -f docker-compose.yml stop;
