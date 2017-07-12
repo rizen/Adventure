@@ -27,6 +27,16 @@ subtest 'move' => sub {
 
     $player->location_object->use_action('jump');
 
+    cmp_ok $player->location, 'eq', 'tree', 'is the player is still in the tree';
+
+    # cmp_ok $player->has_item('branch'), '==', 0, 'player does not have branch';
+    # cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree has branch';
+    #
+    # $player->location_object->transfer('branch', $player);
+    #
+    # cmp_ok $player->has_item('branch'), '==', 1, 'player has branch';
+    # cmp_ok $player->location_object->has_item('branch'), '==', 0, 'tree does not have branch';
+
 };
 
 

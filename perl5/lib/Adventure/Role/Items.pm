@@ -51,6 +51,11 @@ sub has_item {
     return $self->items->{$key} || 0;
 }
 
+sub transfer {
+    my ($self, $key, $object) = @_;
+
+}
+
 after init => sub {
     my ($self, $key, $config) = @_;
     if (ref $config eq 'HASH' && exists $config->{items}) {
