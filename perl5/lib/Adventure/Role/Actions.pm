@@ -22,10 +22,11 @@ sub add_action {
     if (ref $config eq 'HASH') {
         if (exists $config->{code}) {
             my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Action::'.$config->{code};
-            eval "use $module;";
-            if ($@) {
-                die $@;
-            }
+#            eval "use $module;";
+#            if ($@) {
+#                die $@;
+#            }
+	    Adventure::Adv_Add_Plugin( $module );
             $self->actions->{$key} = sub { $module->main() };
         }
         elsif (exists $config->{description}) {
