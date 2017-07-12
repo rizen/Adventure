@@ -2,6 +2,7 @@ use strict;
 use warnings;
 package Adventure::Role::Items;
 use Moo::Role;
+use Try::Tiny;
 requires 'init';
 
 has items => (
@@ -51,9 +52,17 @@ sub has_item {
     return $self->items->{$key} || 0;
 }
 
-sub transfer {
-    my ($self, $key, $object) = @_;
-
+sub put_item {
+    my ($self, $item_key, $object, $quantity) = @_;
+    $quantity ||= 1;
+    $self->remove_item($item_key, $quantity);
+    try {
+        $object->add_item($item_key, $quantity);
+    }
+    catch {
+        $self->add_item($item_key, $quantity);
+        die $_;     
+    }
 }
 
 after init => sub {

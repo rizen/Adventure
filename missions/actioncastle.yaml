@@ -297,8 +297,7 @@ items:
         name : Red Rose
         description : A beautiful red rose.
         actions:
-            smell :
-                description: It smells good.
+            smell : It smells good.
 player:
     each_turn :
         - TrollRage

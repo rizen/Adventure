@@ -14,6 +14,8 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'cottage', 'is the player at the cottage';
 
+    $player->location_object->put_item('fishpole', $player);
+
     isa_ok($player->location_object, 'Adventure::Location', 'player can get its location object');
 
     $player->location_object->use_exit('Out');
@@ -29,13 +31,30 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'tree', 'is the player is still in the tree';
 
-    # cmp_ok $player->has_item('branch'), '==', 0, 'player does not have branch';
-    # cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree has branch';
-    #
-    # $player->location_object->transfer('branch', $player);
-    #
-    # cmp_ok $player->has_item('branch'), '==', 1, 'player has branch';
-    # cmp_ok $player->location_object->has_item('branch'), '==', 0, 'tree does not have branch';
+    cmp_ok $player->has_item('branch'), '==', 0, 'player does not have branch';
+    cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree has branch';
+
+    eval {
+        $player->location_object->put_item('nosuchobject', $player);
+    }; # todo use throws_ok
+    ok $@, 'it failed on an invalid item';
+
+    eval {
+        $player->location_object->put_item('branch', '');
+    };
+    ok $@, 'it failed on an invalid object';
+    cmp_ok $player->location_object->has_item('branch'), '==', 1, 'tree still has branch';
+
+    $player->location_object->put_item('branch', $player);
+
+    cmp_ok $player->has_item('branch'), '==', 1, 'player has branch';
+    cmp_ok $player->location_object->has_item('branch'), '==', 0, 'tree does not have branch';
+
+    $player->location_object->use_exit('Down');
+    $player->location_object->use_exit('South');
+    $player->location_object->use_exit('South');
+
+    $player->location_object->use_action('fish');
 
 };
 
