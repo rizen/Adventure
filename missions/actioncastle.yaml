@@ -299,7 +299,7 @@ items:
         actions:
             smell : It smells good.
 player:
-    each_end_turns :
+    end_turn_events :
         troll rage:
             code: TrollRage
     items:
