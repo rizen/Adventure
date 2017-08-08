@@ -11,6 +11,7 @@ sub main {
             Adventure->player->location_object->property('turn_count',0);
         }
     }
+    return;
 }
 
 1;

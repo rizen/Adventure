@@ -15,6 +15,7 @@ sub main {
             Adventure->player->announce("You splash around in the pond and scare the fish.");
         }
     }
+    return;
 }
 
 1;

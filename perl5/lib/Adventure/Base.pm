@@ -49,6 +49,7 @@ sub install_plugin_add_type {
         elsif (exists $config->{description}) {
             $self->$method()->{$key} = sub {
                 Adventure->player->announce($config);
+                return;
             };
         }
         else {
@@ -57,7 +58,7 @@ sub install_plugin_add_type {
     }
     else {
         $self->$method()->{$key} = sub {
-            Adventure->player->announce($config);
+            return $config;
         };
     }
 }

@@ -15,6 +15,8 @@ sub main {
     # else {
     #     Adventure->player->announce("I don't know what that is.");
     # }
+    return;
+
 }
 
 1;

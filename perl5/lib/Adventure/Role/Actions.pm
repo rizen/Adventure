@@ -27,7 +27,10 @@ sub use_action {
     my ($self, $action) = @_;
     my $available = $self->available_actions;
     if ($action ~~ $available) {
-        $self->actions->{$action}->();
+        my $out = $self->actions->{$action}->();
+        if ($out) {
+            Adventure->player->announce($out);
+        }
     }
     else {
         Adventure->player->announce('There is no action named '.$action.'.');

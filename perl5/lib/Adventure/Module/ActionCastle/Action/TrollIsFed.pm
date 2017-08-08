@@ -11,6 +11,7 @@ sub main {
     # else {
     #     Adventure->player->announce("You don't have a fish.");
     # }
+    return;
 }
 
 1;
