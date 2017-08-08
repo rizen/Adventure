@@ -70,6 +70,11 @@ subtest 'move' => sub {
 
     $player->location_object->use_action('fish');
 
+    $player->end_turn;
+    $player->end_turn;
+    $player->end_turn;
+    $player->display_score;
+    
 };
 
 

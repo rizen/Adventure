@@ -1,19 +1,16 @@
 package Adventure::Module::ActionCastle::Turn::TrollRage;
 
-sub before {
-    my ($game, $player, $params) = @_;
-}
-
-sub after {
-    my ($game, $player, $params) = @_;
-    if ($player->in_location('bridge')) {
-        $player->location->property('turn_count',$player->location->property('turn_count') + 1);
-        if ($player->location->property('turn_count') > 4) {
-            $game->over('The troll beat you to death. Hot damn');
+sub main {
+    my ($class, $params) = @_;
+    warn "got here";
+    if (Adventure->player->location eq 'bridge') {
+        Adventure->player->location_object->property('turn_count',Adventure->player->location_object->property('turn_count') + 1);
+        if (Adventure->player->location_object->property('turn_count') > 4) {
+            Adventure->player->kill('The troll beat you to death. Hot damn');
         }
-    }
-    else {
-        $game->location('bridge')->property('turn_count',0);
+        else {
+            Adventure->player->location_object->property('turn_count',0);
+        }
     }
 }
 

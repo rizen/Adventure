@@ -10,51 +10,12 @@ has actions => (
     default     => sub { {} },
 );
 
-sub add_actions {
-    my ($self, $actions) = @_;
-    foreach my $key (keys %{$actions}) {
-        $self->add_action($key, $actions->{$key});
-    }
-}
-
-sub add_action {
-    my ($self, $key, $config) = @_;
-    if (ref $config eq 'HASH') {
-        if (exists $config->{code}) {
-            my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Action::'.$config->{code};
-#            eval "use $module;";
-#            if ($@) {
-#                die $@;
-#            }
-	    Adventure::Adv_Add_Plugin( $module );
-            $self->actions->{$key} = sub { $module->main() };
-        }
-        elsif (exists $config->{description}) {
-            $self->actions->{$key} = sub {
-                Adventure->player->announce($config);
-            };
-        }
-        else {
-            die $key.' has a bad config';
-        }
-    }
-    else {
-        $self->actions->{$key} = sub {
-            Adventure->player->announce($config);
-        };
-    }
-}
-
 after init => sub {
     my ($self, $key, $config) = @_;
-    if (ref $config eq 'HASH' && exists $config->{actions}) {
-        if (ref $config->{actions} eq 'HASH') {
-            $self->add_actions($config->{actions});
-        }
-        else {
-            die "$key actions must be a hash";
-        }
-    }
+    $self->install_plugin($key, $config, {
+        type        => 'actions',
+        namespace   => 'Action',
+    });
 };
 
 sub available_actions {

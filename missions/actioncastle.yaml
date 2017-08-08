@@ -299,7 +299,7 @@ items:
         actions:
             smell : It smells good.
 player:
-    each_turn :
+    each_end_turn :
         - TrollRage
     items:
         unlitlamp : 1,
