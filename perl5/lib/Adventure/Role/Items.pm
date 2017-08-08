@@ -36,14 +36,19 @@ sub add_item {
 sub remove_item {
     my ($self, $key, $quantity) = @_;
     $quantity ||= 1;
-    if ($self->items->{$key} == $quantity) {
-        delete $self->items->{$key};
-    }
-    elsif ($self->items->{$key} < $quantity) {
-        die "Not enough $key";
+    if (exists $self->items->{$key} && defined $self->items->{$key}) {
+        if ($self->items->{$key} == $quantity) {
+            delete $self->items->{$key};
+        }
+        elsif ($self->items->{$key} < $quantity) {
+            die "Not enough $key";
+        }
+        else {
+            $self->items->{$key} -= $quantity;
+        }
     }
     else {
-        $self->items->{$key} -= $quantity;
+        die "$key does not exist";
     }
 }
 
@@ -61,7 +66,7 @@ sub put_item {
     }
     catch {
         $self->add_item($item_key, $quantity);
-        die $_;     
+        die $_;
     }
 }
 
