@@ -119,7 +119,6 @@ sub test_method_calls {
    can_ok $obj, 'item_exists';
    can_ok $obj, 'add_actors';
    can_ok $obj, 'add_actor';
-   can_ok $obj, 'Adv_Add_Plugin';
 
    return;
 }

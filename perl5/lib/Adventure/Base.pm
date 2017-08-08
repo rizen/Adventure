@@ -39,11 +39,10 @@ sub install_plugin_add_type {
     if (ref $config eq 'HASH') {
         if (exists $config->{code}) {
             my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::'.$options->{namespace}.'::'.$config->{code};
-            #        eval "use $module;";
-            #        if ($@) {
-            #            die $@;
-            #        }
-            Adventure::Adv_Add_Plugin( $module );
+               eval "use $module;";
+               if ($@) {
+                   die $@;
+               }
             $self->$method()->{$key} = sub { $module->main() };
         }
         elsif (exists $config->{description}) {

@@ -9,7 +9,7 @@ use Adventure;
 
 
 # before tests begin
-before  setup     => sub { say 'begin  setup'; }; 
+before  setup     => sub { say 'begin  setup'; };
 
 # after tests finish
 after   teardown  => sub { say 'after  setup'; };
@@ -17,7 +17,7 @@ after   teardown  => sub { say 'after  setup'; };
 before  each_test => sub { say 'before test'; };
 after   each_test => sub { say 'after  test'; };
 
-test 'definition' => sub { 
+test 'definition' => sub {
    my $adv = Adventure->new;
    isa_ok($adv, 'Adventure');
    diag 'No Attributes';
@@ -44,14 +44,13 @@ test 'definition' => sub {
 	       item_exists
 	       add_actors
 	       add_actor
-	       Adv_Add_Plugin
              );
    foreach my $i (@m) { can_ok $adv, $i; }
    diag 'No Inherited Attribute(s)';
    diag 'No Inherited Method(s)';
 };
 
-test 'roles' => sub { 
+test 'roles' => sub {
    ok(1,'No Roles to test');
 };
 
