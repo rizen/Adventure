@@ -299,8 +299,9 @@ items:
         actions:
             smell : It smells good.
 player:
-    each_end_turn :
-        - TrollRage
+    each_end_turns :
+        troll rage:
+            code: TrollRage
     items:
         unlitlamp : 1,
     location: cottage

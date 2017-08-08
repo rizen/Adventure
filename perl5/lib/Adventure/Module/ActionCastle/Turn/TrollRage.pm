@@ -2,7 +2,6 @@ package Adventure::Module::ActionCastle::Turn::TrollRage;
 
 sub main {
     my ($class, $params) = @_;
-    warn "got here";
     if (Adventure->player->location eq 'bridge') {
         Adventure->player->location_object->property('turn_count',Adventure->player->location_object->property('turn_count') + 1);
         if (Adventure->player->location_object->property('turn_count') > 4) {

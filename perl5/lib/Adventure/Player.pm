@@ -111,7 +111,6 @@ sub start_turn {
 sub end_turn {
     my $self = shift;
     foreach my $key (keys %{$self->each_end_turns}) {
-        warn "GOT HERE";
         $self->each_end_turns->{$key}->();
     }
     $self->turns($self->turns + 1);
