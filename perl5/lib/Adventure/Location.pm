@@ -21,14 +21,10 @@ after init => sub {
                 die "$key actors must be an array";
             }
         }
-        if (exists $config->{exits}) {
-            if (ref $config->{exits} eq 'HASH') {
-                $self->add_exits($config->{exits});
-            }
-            else {
-                die "$key exits must be a hash";
-            }
-        }
+        $self->install_plugin($key, $config, {
+            type        => 'exits',
+            namespace   => 'Exit',
+        });
     }
 };
 
@@ -36,30 +32,6 @@ has exits => (
     is          => 'rw',
     default     => sub { {} },
 );
-
-sub add_exits {
-    my ($self, $exits) = @_;
-    foreach my $key (keys %{$exits}) {
-        $self->add_exit($key, $exits->{$key});
-    }
-}
-
-sub add_exit {
-    my ($self, $key, $location) = @_;
-    if (ref $location eq 'HASH') {
-       my $module = 'Adventure::Module::'.Adventure->config->{namespace}.'::Exit::'.$location->{code};
-       #        eval "use $module;";
-       #        if ($@) {
-       #            die $@;
-       #        }
-       Adventure::Adv_Add_Plugin( $module );
-
-        $self->exits->{$key} = sub { $module->main($location->{params}) };
-    }
-    else {
-        $self->exits->{$key} = sub { return $location };
-    }
-}
 
 sub available_exits {
     my $self = shift;
@@ -77,9 +49,6 @@ sub use_exit {
         Adventure->player->announce('There is no exit named '.$exit.'.');
     }
 }
-
-
-
 
 has actors => (
     is          => 'rw',
