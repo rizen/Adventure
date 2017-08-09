@@ -3,6 +3,7 @@ use warnings;
 package Adventure::Role::Items;
 use Moo::Role;
 use Try::Tiny;
+use Ouch;
 requires 'init';
 
 has items => (
@@ -19,7 +20,7 @@ sub add_items {
 
 sub add_item {
     my ($self, $key, $quantity) = @_;
-    $quantity ||= 1;
+    $quantity //= 1;
     if (exists $self->items->{$key}) {
         $self->items->{$key} += $quantity;
     }
@@ -55,6 +56,14 @@ sub remove_item {
 sub has_item {
     my ($self, $key) = @_;
     return $self->items->{$key} || 0;
+}
+
+sub get_item_object {
+    my ($self, $key) = @_;
+    if ($self->has_item($key)) {
+        return Adventure->get_item($key);
+    }
+    ouch 'no such item', $key.' does not exist';
 }
 
 sub put_item {

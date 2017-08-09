@@ -130,6 +130,11 @@ sub item_exists {
     return 0;
 }
 
+sub get_item {
+    my ($class, $key) = @_;
+    return $class->items->{$key};
+}
+
 sub add_actors {
     my ($class, $actors) = @_;
     foreach my $key (keys %{$actors}) {

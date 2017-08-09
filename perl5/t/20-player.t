@@ -126,6 +126,12 @@ subtest 'move' => sub {
     $player->location_object->use_exit('Down');
     cmp_ok $player->location, 'eq', 'dungeonstairs', 'is the player is at the dungeonstairs';
 
+    $player->get_item_object('unlitlamp')->use_action('light');
+    cmp_ok $player->has_item('lamp'), '==', 1, 'we have lit the lamp';
+
+    $player->display_inventory;
+
+
 };
 
 
