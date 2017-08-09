@@ -107,6 +107,24 @@ subtest 'move' => sub {
     $player->location_object->use_exit('East');
     cmp_ok $player->location, 'eq', 'courtyard', 'is the player is at the courtyard';
 
+    Adventure->get_actor('guard')->use_action('hit guard with branch');
+
+    cmp_ok $player->location_object->has_actor('koguard'), '==', 1, 'guard is ko';
+
+    $player->location_object->get_actor('koguard')->put_item('key', $player);
+    cmp_ok $player->has_item('key'), '==', 1, 'player has key';
+
+    $player->location_object->use_exit('East');
+    cmp_ok $player->location, 'eq', 'hall', 'is the player is at the hall';
+
+    $player->location_object->put_item('candle', $player);
+    cmp_ok $player->has_item('candle'), '==', 1, 'player has candle';
+
+    $player->location_object->use_exit('West');
+    cmp_ok $player->location, 'eq', 'courtyard', 'is the player is at the courtyard';
+
+    $player->location_object->use_exit('Down');
+    cmp_ok $player->location, 'eq', 'dungeonstairs', 'is the player is at the dungeonstairs';
 
 };
 

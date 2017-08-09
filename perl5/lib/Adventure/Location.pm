@@ -8,6 +8,7 @@ with 'Adventure::Role::Aliases';
 with 'Adventure::Role::Properties';
 with 'Adventure::Role::Actions';
 with 'Adventure::Role::Items';
+use Ouch;
 
 after init => sub {
     my ($self, $key, $config) = @_;
@@ -82,6 +83,14 @@ sub remove_actor {
 sub has_actor {
     my ($self, $key) = @_;
     return grep($key, @{$self->actors});
+}
+
+sub get_actor {
+    my ($self, $key) = @_;
+    if ($self->has_actor($key)) {
+        return Adventure->get_actor($key);
+    }
+    ouch 'no such actor', $key.' is not in this location';
 }
 
 sub replace_actor {
