@@ -2,13 +2,12 @@ package Adventure::Module::ActionCastle::Action::GoFishing;
 
 sub main {
     my ($class) = @_;
-    if (Adventure->player->location_object->property('caught_fish')) {
+    if (!Adventure->player->location_object->has_item('fish')) {
         Adventure->player->announce("you already caught one. hot damn");
     }
     else {
         if (Adventure->player->has_item('fishpole')) {
-            Adventure->player->add_item('fish',1);
-            Adventure->player->location_object->property('caught_fish',1);
+            Adventure->player->location_object->put_item('fish', Adventure->player);
             Adventure->player->announce("You caught a fish! Hot damn.");
         }
         else {

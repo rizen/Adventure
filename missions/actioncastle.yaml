@@ -25,8 +25,8 @@ locations:
             North : gardenpath
         look :
             pond : You see fish in the pond!
-        properties :
-            caught_fish : 0
+        items :
+            fish : 1
         actions :
             fish :
                 code : GoFishing

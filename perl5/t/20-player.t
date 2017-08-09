@@ -70,11 +70,12 @@ subtest 'move' => sub {
 
     $player->location_object->use_action('fish');
 
-    $player->end_turn;
-    $player->end_turn;
-    $player->end_turn;
-    $player->display_score;
-    
+    cmp_ok $player->has_item('fish'), '==', 1, 'player  has fish';
+
+    $player->location_object->use_action('fish');
+
+    cmp_ok $player->has_item('fish'), '==', 1, 'player still has only 1 fish';
+
 };
 
 
