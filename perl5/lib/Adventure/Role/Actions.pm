@@ -4,6 +4,7 @@ package Adventure::Role::Actions;
 use Moo::Role;
 requires 'init';
 use Adventure::Action;
+use experimental 'smartmatch';
 
 has actions => (
     is          => 'rw',
