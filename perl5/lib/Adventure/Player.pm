@@ -9,6 +9,7 @@ with 'Adventure::Role::Properties';
 with 'Adventure::Role::Actions';
 with 'Adventure::Role::Items';
 use feature 'say';
+use Ouch;
 
 has start_turn_events => (
     is          => 'rw',
@@ -81,7 +82,7 @@ sub kill {
     }
     $self->announce('Game Over');
     $self->display_score();
-    exit;
+    ouch 'game over', 'Game Over';
 }
 
 sub display_score {

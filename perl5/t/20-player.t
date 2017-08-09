@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Test::Most;
 use FindBin::libs;
+use Ouch;
 
 use_ok('Adventure');
 Adventure->init('../missions/actioncastle.yaml');
@@ -75,6 +76,37 @@ subtest 'move' => sub {
     $player->location_object->use_action('fish');
 
     cmp_ok $player->has_item('fish'), '==', 1, 'player still has only 1 fish';
+
+    $player->location_object->use_exit('North');
+    $player->location_object->use_exit('North');
+
+    $player->location_object->use_exit('East');
+
+    cmp_ok $player->location, 'eq', 'bridge', 'is the player at the bridge';
+
+    $player->end_turn;
+    $player->end_turn;
+    $player->end_turn;
+    $player->end_turn;
+    eval { $player->end_turn };
+    if (kiss 'game over') {
+        pass "We should have died, but we're going to keep going, because we're immortal.";
+        # reset the condition so we don't keep dying
+        Adventure->get_location('bridge')->property('turn_count',0);
+    }
+    $player->display_score;
+
+    $player->location_object->use_exit('East');
+    cmp_ok $player->location, 'eq', 'bridge', 'is the player is still at the bridge';
+
+    Adventure->get_actor('troll')->use_action('give troll fish');
+
+    cmp_ok $player->has_item('fish'), '==', 0, 'player does not have fish';
+    cmp_ok Adventure->player->location_object->property('troll_fed'), '==', 1, 'troll has fish';
+
+    $player->location_object->use_exit('East');
+    cmp_ok $player->location, 'eq', 'courtyard', 'is the player is at the courtyard';
+
 
 };
 
