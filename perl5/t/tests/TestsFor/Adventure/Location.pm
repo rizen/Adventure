@@ -52,8 +52,6 @@ sub test_method_calls : {
    $test->test_report->plan(8);
    my $obj = $test->test_obj;
 
-   can_ok $obj, 'add_exits';
-   can_ok $obj, 'add_exit';
    can_ok $obj, 'available_exits';
    can_ok $obj, 'use_exit';
    can_ok $obj, 'add_actors';
