@@ -2,6 +2,7 @@ use strict;
 use warnings;
 package Adventure::Location;
 use Moo;
+use experimental 'smartmatch';
 extends 'Adventure::Base';
 with 'Adventure::Role::Thing';
 with 'Adventure::Role::Aliases';

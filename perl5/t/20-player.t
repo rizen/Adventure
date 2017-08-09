@@ -4,7 +4,7 @@ use Test::Most;
 use FindBin::libs;
 
 use_ok('Adventure');
-Adventure->init('../missions/actioncastle.yaml');
+Adventure->init('./missions/actioncastle.yaml');
 
 subtest 'move' => sub {
 
