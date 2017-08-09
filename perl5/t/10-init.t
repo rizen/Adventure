@@ -4,12 +4,16 @@ use Test::More;
 use FindBin::libs;
 
 
+my $MISSION_FILE = './missions/actioncastle.yaml';
+BAIL_OUT( "Could not find $MISSION_FILE" ) unless -e $MISSION_FILE;
+
+
 subtest 'init' => sub {
 
     use_ok('Adventure');
 
     eval {
-        Adventure->init('../missions/actioncastle.yaml');
+        Adventure->init( $MISSION_FILE );
     };
 
     unless ( ok( ! $@, "init ran without error") )

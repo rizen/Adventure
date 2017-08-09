@@ -12,7 +12,7 @@ use Adventure::Action;
 # before tests begin
 before  setup     => sub {
    say 'begin  setup';
-   #Adventure->init('../missions/actioncastle.yaml');
+   #Adventure->init('./missions/actioncastle.yaml');
 };
 
 
