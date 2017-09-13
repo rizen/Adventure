@@ -81,6 +81,11 @@ sub kill {
         $self->announce($message);
     }
     $self->announce('Game Over');
+    $self->game_over;
+}
+
+sub game_over {
+    my $self = shift;
     $self->display_score();
     ouch 'game over', 'Game Over';
 }

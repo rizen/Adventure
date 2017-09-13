@@ -124,7 +124,7 @@ locations:
         name: Dungeon
         description : You are in the dungeon.
         exits :
-            Down : towerstairs
+            Up : dungeonstairs
         actors:
             - ghost
     hall:
@@ -147,8 +147,8 @@ actors:
         name : Throne
         description: An ornate golden throne.
         actions:
-            sit (not royal) : You think better of it since you are not royalty.
-            sit (royal) : You sit on the ornate golden throne. The people cheer for the new ruler of Action Castle! Game over.
+            sit :
+                code : SitThrone
     ghost:
         name: Spooky Ghost
         description: The ghost has bony, claw-like fingers, and wears a crown.
@@ -161,7 +161,8 @@ actors:
             generic: She looks sad, but says nothing.
         actions :
             kiss: She slaps you.
-            give rose : takes it and smiles, transform into happyprincess
+            give rose :
+                code: GiveRose
     happyprincess:
         name: Princess
         description: The princess is beautiful, happy, but lonely. She awates her prince.
@@ -174,9 +175,8 @@ actors:
 
         actions :
             kiss: She slaps you. "Not until we're wed!"
-            marry : DoMarryAction()
-            #marry (no crown): "You're not royalty."
-            #marry (has crown): "My father's crown! You have put his soul at rest and you may now succeed him! I accept." Places crown on your head. Set royalty = 1. Transform koguard to humbleguard. Change the description of the throne room to include revelers
+            marry :
+                code : Propose
     queen:
         name: Queen
         description: The queen is beautiful, happy, and has found her king.
@@ -260,6 +260,13 @@ items:
         description : The candle is covered in strange runes.
         actions:
             read : The runes seem to be a spell of exorcism.
+            light:
+                code: LightCandle
+    litcandle :
+        name : Lighted Strange Candle
+        description : The candle is covered in strange runes, giving off an acrid smoke.
+        actions:
+            read : The runes seem to be a spell of exorcism.
     crown:
         name : Crown
         description: A golden crown fit for royalty.
@@ -270,7 +277,8 @@ items:
         name : Key
         description: A small gold key.
         actions:
-            unlock tower door : ok
+            unlock tower door :
+                code: UnlockDoor
     fish:
         name: Fish
         description: You have a fish. It is raw.

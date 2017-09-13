@@ -22,6 +22,7 @@ subtest 'move' => sub {
     $player->location_object->use_exit('Out');
 
     cmp_ok $player->location, 'eq', 'gardenpath', 'is the player at the garden path';
+    $player->location_object->get_actor('bush')->put_item('rose', $player);
 
     $player->location_object->use_exit('North');
     $player->location_object->use_exit('Up');
@@ -130,6 +131,49 @@ subtest 'move' => sub {
     cmp_ok $player->has_item('lamp'), '==', 1, 'we have lit the lamp';
 
     $player->display_inventory;
+
+    $player->location_object->use_exit('Down');
+    cmp_ok $player->location, 'eq', 'dungeon', 'is the player is at the dungeon';
+
+    cmp_ok $player->location_object->has_actor('ghost'), '==', 1, 'dungeon has ghost';
+
+    $player->get_item_object('candle')->use_action('light');
+    cmp_ok $player->has_item('litcandle'), '==', 1, 'we have lit the candle';
+
+    cmp_ok $player->location_object->has_item('crown'), '==', 1, 'dungeon has crown';
+    cmp_ok $player->location_object->has_actor('ghost'), '==', 0, 'dungeon no longer has ghost';
+
+    $player->location_object->put_item('crown', $player);
+    cmp_ok $player->location_object->has_item('crown'), '==', 0, 'dungeon no longer has crown';
+    cmp_ok $player->has_item('crown'), '==', 1, 'player has crown';
+
+    $player->location_object->use_exit('Up');
+    $player->location_object->use_exit('Up');
+    $player->location_object->use_exit('Up');
+    cmp_ok $player->location, 'eq', 'towerstairs', 'is the player is at the tower stairs';
+
+    $player->location_object->use_exit('Up');
+    cmp_ok $player->location, 'eq', 'towerstairs', 'is the player is at the tower stairs';
+
+    $player->get_item_object('key')->use_action('unlock tower door');
+    $player->location_object->use_exit('Up');
+    cmp_ok $player->location, 'eq', 'tower', 'is the player is at the tower';
+
+    $player->location_object->get_actor('sadprincess')->use_action('give rose');
+    cmp_ok $player->location_object->has_actor('happyprincess'), 'eq', 1, 'sad princess is now happy';
+
+
+    $player->location_object->get_actor('happyprincess')->use_action('marry');
+    cmp_ok $player->property('royalty'), 'eq', 1, 'player is now royalty';
+
+
+    $player->location_object->use_exit('Down');
+    $player->location_object->use_exit('Down');
+    $player->location_object->use_exit('East');
+    $player->location_object->use_exit('East');
+    cmp_ok $player->location, 'eq', 'throne', 'is the player is at the throne';
+    $player->location_object->get_actor('throne')->use_action('sit');
+
 
 
 };
