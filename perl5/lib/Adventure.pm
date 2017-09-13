@@ -7,6 +7,7 @@ use Adventure::Actor;
 use Adventure::Location;
 use Adventure::Player;
 use YAML;
+use experimental 'smartmatch';
 
 use 5.010_000;
 
