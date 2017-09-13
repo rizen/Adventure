@@ -10,7 +10,7 @@ use Adventure;
 # before tests begin
 before  setup     => sub { 
    say 'before setup'; 
-   Adventure->init('../missions/actioncastle.yaml');
+   Adventure->init('./missions/actioncastle.yaml');
 };
 
 # after tests finish
