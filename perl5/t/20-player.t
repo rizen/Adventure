@@ -5,7 +5,7 @@ use FindBin::libs;
 use Ouch;
 
 use_ok('Adventure');
-Adventure->init('./missions/actioncastle.yaml');
+Adventure->init('../missions/actioncastle.yaml');
 
 subtest 'move' => sub {
 
