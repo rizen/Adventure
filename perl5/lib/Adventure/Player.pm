@@ -9,6 +9,7 @@ with 'Adventure::Role::Properties';
 with 'Adventure::Role::Actions';
 with 'Adventure::Role::Items';
 use feature 'say';
+use Ouch;
 
 has start_turn_events => (
     is          => 'rw',
@@ -81,13 +82,20 @@ sub kill {
     }
     $self->announce('Game Over');
     $self->display_score();
-    exit;
+    ouch 'game over', 'Game Over';
 }
 
 sub display_score {
     my $self = shift;
     $self->announce('Score: '.$self->score);
     $self->announce('Turns: '.$self->turns);
+}
+
+sub display_inventory {
+    my $self = shift;
+    foreach my $key (keys %{$self->items}) {
+        $self->announce($self->items->{$key}. ' '. Adventure->items->{$key}->name);
+    }
 }
 
 1;

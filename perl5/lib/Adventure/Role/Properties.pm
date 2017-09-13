@@ -17,8 +17,11 @@ sub add_properties {
 }
 
 sub property { # alias of add_property
-    my $self = shift;
-    $self->add_property(@_);
+    my ($self, $name, $value) = @_;
+    if ($value) {
+        $self->add_property($name, $value);
+    }
+    $self->properties->{$name};
 }
 
 sub add_property {

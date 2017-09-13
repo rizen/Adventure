@@ -98,6 +98,11 @@ sub add_location {
     $class->locations->{$key} = $location;
 }
 
+sub get_location {
+    my ($class, $key) = @_;
+    return $class->locations->{$key};
+}
+
 sub add_items {
     my ($class, $items) = @_;
     foreach my $key (keys %{$items}) {
@@ -126,6 +131,11 @@ sub item_exists {
     return 0;
 }
 
+sub get_item {
+    my ($class, $key) = @_;
+    return $class->items->{$key};
+}
+
 sub add_actors {
     my ($class, $actors) = @_;
     foreach my $key (keys %{$actors}) {
@@ -139,6 +149,12 @@ sub add_actor {
     $actor->init($key, $config);
     $class->actors->{$key} = $actor;
 }
+
+sub get_actor {
+    my ($class, $key) = @_;
+    return $class->actors->{$key};
+}
+
 
 
 

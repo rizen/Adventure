@@ -32,7 +32,7 @@ The message to send if the player does not yet have the C<allow_property> set.
 
 sub main {
     my ($class, $params) = @_;
-    if (Adventure->player->location->property($params->{allow_property})) {
+    if (Adventure->player->location_object->property($params->{allow_property})) {
         return $params->{destination};
     }
     else {

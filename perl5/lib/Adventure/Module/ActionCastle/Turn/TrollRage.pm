@@ -7,9 +7,9 @@ sub main {
         if (Adventure->player->location_object->property('turn_count') > 4) {
             Adventure->player->kill('The troll beat you to death. Hot damn');
         }
-        else {
-            Adventure->player->location_object->property('turn_count',0);
-        }
+    }
+    else {
+        Adventure->get_location('bridge')->property('turn_count',0);
     }
     return;
 }

@@ -43,11 +43,11 @@ sub install_plugin_add_type {
                if ($@) {
                    die $@;
                }
-            $self->$method()->{$key} = sub { $module->main() };
+            $self->$method()->{$key} = sub { $module->main($config->{params}) };
         }
         elsif (exists $config->{description}) {
             $self->$method()->{$key} = sub {
-                Adventure->player->announce($config);
+                Adventure->player->announce($config->{description});
                 return;
             };
         }

@@ -25,8 +25,8 @@ locations:
             North : gardenpath
         look :
             pond : You see fish in the pond!
-        properties :
-            caught_fish : 0
+        items :
+            fish : 1
         actions :
             fish :
                 code : GoFishing
@@ -284,12 +284,11 @@ items:
         name: Branch
         description: It is stout and dead.
     unlitlamp:
-        name : Lamp
+        name : Unlit Lamp
         description: A small lamp. It is unlit.
         actions:
             light:
-                description: Lamp is now lit!
-                notes: add down exit to dungeon stairs, transform to "lamp"
+                code: LightLamp
     lamp:
         name : Lamp
         description: A small lamp. It is lit.
@@ -303,7 +302,7 @@ player:
         troll rage:
             code: TrollRage
     items:
-        unlitlamp : 1,
+        unlitlamp : 1
     location: cottage
     properties:
         royalty : 0
