@@ -13,7 +13,7 @@ locations:
         description : You are standing on the left side.
         exits :
             Back : middle
-            Outback : outback
+            GoOutback : outback
     rightside:
         name: Right side
         description : You are standing on the right side.
