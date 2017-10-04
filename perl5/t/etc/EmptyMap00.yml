@@ -1,0 +1,9 @@
+---
+name: Empty Map 00
+namespace : EmptyMap00
+locations:
+    blackhole:
+        name: BlackHole
+        description : You are standing in a small Black Hole.
+        exits :
+            Out : blackhole

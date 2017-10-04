@@ -1,0 +1,20 @@
+---
+name: Empty Map 02
+namespace : EmptyMap02
+locations:
+    middle:
+        name: Middle
+        description : You are standing in the middle.
+        exits :
+            Left : leftside
+            Right : rightside
+    leftside:
+        name: Left side
+        description : You are standing on the left side.
+        exits :
+            Back : middle
+    rightside:
+        name: Right side
+        description : You are standing on the right side.
+        exits :
+            Back : middle

@@ -1,0 +1,28 @@
+---
+name: Empty Map 03
+namespace : EmptyMap03
+locations:
+    middle:
+        name: Middle
+        description : You are standing in the middle.
+        exits :
+            Left : leftside
+            Right : rightside
+    leftside:
+        name: Left side
+        description : You are standing on the left side.
+        exits :
+            Back : middle
+            Outback : outback
+    rightside:
+        name: Right side
+        description : You are standing on the right side.
+        exits :
+            Back : middle
+            GoOutback : outback
+    outback:
+        name: Outback
+        description : You are standing way out back, mate.
+        exits :
+            Left : leftside
+            Right : rightside

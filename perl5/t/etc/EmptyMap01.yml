@@ -1,0 +1,14 @@
+---
+name: Empty Map 01
+namespace : EmptyMap01
+locations:
+    inside:
+        name: Inside
+        description : You are standing inside.
+        exits :
+            Out : outside
+    outside:
+        name: Outside
+        description : You are standing outside.
+        exits :
+            In : inside
