@@ -7,3 +7,9 @@ locations:
         description : You are standing in a small Black Hole.
         exits :
             Out : blackhole
+
+player:
+    end_turn_events :
+    items:
+    location: blackhole
+    properties:
