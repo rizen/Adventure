@@ -11,7 +11,8 @@ with 'Adventure::Role::Items';
 
 after init => sub {
     my ($self, $key, $config) = @_;
-    warn "NEED to implement TALK for $key";
+    # commenting out for now. -sk.
+     #warn "NEED to implement TALK for $key";
 };
 
 1;

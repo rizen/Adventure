@@ -13,7 +13,8 @@ use Ouch;
 
 after init => sub {
     my ($self, $key, $config) = @_;
-    warn "need to implement LOOK for $key. should that just be an action?";
+    # commenting out for now, will put back sometime... -sk.
+     # warn "need to implement LOOK for $key. should that just be an action?";
     if (ref $config eq 'HASH') {
         if (exists $config->{actors}) {
             if (ref $config->{actors} eq 'ARRAY') {

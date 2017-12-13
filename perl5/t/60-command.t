@@ -1,12 +1,14 @@
 use strict;
 use warnings;
-use Test::Most tests => 2;
+use Test::Most 'no_plan';
 use FindBin::libs;
+use Text::ParseWords;
 use Ouch;
 
 use_ok('Adventure');
 Adventure->init('../missions/actioncastle.yaml');
 
+# 1..2 call to sub is assumed. -sk.
 subtest 'move' => sub {
 
     my $player = Adventure->player;
@@ -15,10 +17,22 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'cottage', 'is the player at the cottage';
 
+    # take or pickup:
+    # Object: fishpole
+    my @words = quotewords('\s+', 0, q{take fishpole});
+    cmp_ok $words[0], 'eq', 'take', 'this is verb taking';
+    cmp_ok $words[1], 'eq', 'fishpole', 'thing is fishpole';
+    
     $player->location_object->put_item('fishpole', $player);
 
     isa_ok($player->location_object, 'Adventure::Location', 'player can get its location object');
 
+    # go:
+    # Object: Out
+    my @words = quotewords('\s+', 0, q{go Out});
+    cmp_ok $words[0], 'eq', 'go', 'this is verb go';
+    cmp_ok $words[1], 'eq', 'Out', 'thing is Out';
+    
     $player->location_object->use_exit('Out');
 
     cmp_ok $player->location, 'eq', 'gardenpath', 'is the player at the garden path';
@@ -85,8 +99,6 @@ subtest 'move' => sub {
 
     cmp_ok $player->location, 'eq', 'bridge', 'is the player at the bridge';
 
-    # Note: player can only stay on the bridge for a short time 
-    #   (currently 4 turns) after which, we should get killed.
     $player->end_turn;
     $player->end_turn;
     $player->end_turn;
