@@ -174,7 +174,11 @@ subtest 'move' => sub {
     $player->location_object->use_exit('East');
     $player->location_object->use_exit('East');
     cmp_ok $player->location, 'eq', 'throne', 'is the player is at the throne';
-    $player->location_object->get_actor('throne')->use_action('sit');
+    throws_ok {
+       $player->location_object->get_actor('throne')->use_action('sit');
+    }
+    qr//,
+    'Game Over dude';
 
 
 
