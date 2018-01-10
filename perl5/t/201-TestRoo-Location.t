@@ -28,9 +28,7 @@ test 'definition' => sub {
    my @a = qw(exits actors);
    foreach my $i (@a) { can_ok $location, $i; }
    diag 'Methods';
-   my @m = qw( add_exits
-               add_exit
-               available_exits
+   my @m = qw( available_exits
                use_exit
                add_actors
                add_actor
