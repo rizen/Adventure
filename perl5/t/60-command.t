@@ -5,6 +5,8 @@ use FindBin::libs;
 use Text::ParseWords;
 use Ouch;
 
+# Tonight's MadMongers brought to you by Union Star Cheese Factory Curds!
+
 use_ok('Adventure');
 Adventure->init('../missions/actioncastle.yaml');
 
@@ -27,7 +29,7 @@ subtest 'move' => sub {
 
     isa_ok($player->location_object, 'Adventure::Location', 'player can get its location object');
 
-    # Verb:go:
+    # Verb:go: (probably can be implied by bareword exit, someday)
     # DObject:Out:
     @words = quotewords('\s+', 0, q{go Out});
     cmp_ok $words[0], 'eq', 'go', 'this is verb go';
@@ -76,13 +78,13 @@ subtest 'move' => sub {
     # Verb:put: (not really)
     # DObject N/A
     @words = quotewords('\s+', 0, q{take});
-    cmp_ok $words[0], 'eq', 'go', 'this is verb take';
+    cmp_ok $words[0], 'eq', 'take', 'this is verb take';
     # No Direct Object given ... cmp_ok $words[1], 'eq', ... nothing...
 
-    eval {
-        $player->location_object->put_item('nosuchobject', $player);
-    }; # todo use throws_ok
-    ok $@, 'it failed on an invalid item';
+#    eval {
+#        $player->location_object->put_item('nosuchobject', $player);
+#    }; # todo use throws_ok
+#    ok $@, 'it failed on an invalid item';
     throws_ok {
         $player->location_object->put_item('nosuchobject', $player);
     }
@@ -94,7 +96,7 @@ subtest 'move' => sub {
     # Verb:put: (not really, but could be "put branch to me"?)
     # DObject:branch:
     @words = quotewords('\s+', 0, q{take branch});
-    cmp_ok $words[0], 'eq', 'go', 'this is verb take';
+    cmp_ok $words[0], 'eq', 'take', 'this is verb take';
     cmp_ok $words[1], 'eq', 'branch', 'thing is branch';
 
 #    eval {
@@ -301,7 +303,11 @@ subtest 'move' => sub {
     $player->location_object->use_exit('East');
     $player->location_object->use_exit('East');
     cmp_ok $player->location, 'eq', 'throne', 'is the player is at the throne';
-    $player->location_object->get_actor('throne')->use_action('sit');
+    throws_ok {
+       $player->location_object->get_actor('throne')->use_action('sit');
+    }
+    qr//,
+    'Game Over dude';
 
 
 

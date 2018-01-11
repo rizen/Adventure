@@ -162,6 +162,8 @@ actors:
         actions :
             kiss: She slaps you.
             give rose :
+                aliases:
+                    - give rose to princess
                 code: GiveRose
     happyprincess:
         name: Princess
