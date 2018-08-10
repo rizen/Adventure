@@ -9,6 +9,8 @@ with 'Adventure::Role::Properties';
 with 'Adventure::Role::Actions';
 with 'Adventure::Role::Items';
 
+sub init { $_[0]->SUPER::init }
+
 after init => sub {
     my ($self, $key, $config) = @_;
     # commenting out for now. -sk.

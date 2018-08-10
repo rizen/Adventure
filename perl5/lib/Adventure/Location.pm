@@ -11,6 +11,8 @@ with 'Adventure::Role::Actions';
 with 'Adventure::Role::Items';
 use Ouch;
 
+sub init { $_[0]->SUPER::init }
+
 after init => sub {
     my ($self, $key, $config) = @_;
     # commenting out for now, will put back sometime... -sk.

@@ -8,5 +8,6 @@ with 'Adventure::Role::Aliases';
 with 'Adventure::Role::Properties';
 with 'Adventure::Role::Actions';
 
+sub init { $_[0]->SUPER::init }
 
 1;

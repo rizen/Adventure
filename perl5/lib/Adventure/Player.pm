@@ -11,6 +11,8 @@ with 'Adventure::Role::Items';
 use feature 'say';
 use Ouch;
 
+sub init { $_[0]->SUPER::init }
+
 has start_turn_events => (
     is          => 'rw',
     default     => sub { {} },
