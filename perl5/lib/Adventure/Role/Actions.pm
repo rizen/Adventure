@@ -24,6 +24,11 @@ sub available_actions {
     return [keys %{$self->actions}];
 }
 
+sub has_actions {
+    my ($self, $key) = @_;
+    return grep($key, @{$self->actions});
+}
+
 sub use_action {
     my ($self, $action) = @_;
     my $available = $self->available_actions;
