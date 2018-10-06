@@ -1,7 +1,8 @@
 #!/usr/bin/env perl
 use strict; use warnings;
 use feature qw(say switch);
-use experimental 'smartmatch';
+#use experimental qw(smartmatch);
+#no warnings qw( experimental::smartmatch );
 use Text::ParseWords;
 #use FindBin::libs;
 #use Ouch;
@@ -26,24 +27,24 @@ sub brute_parse {
   #my @words = quotewords('\s+', 0, q{sit on throne});
   #given ($$words[0]) {
   for ($$ra_words[0]) {     # 5.14: according to perlsyn
-     when (/exit/)                    { say 'exit';         $player->game_over(); }
-     when (/move/)                    { say 'move DIRECTION'; move($player,$ra_words);}
-     when (/take/)                    { say 'take OBJECT from CHARACTER' }
-     when (/unlock/)                  { say 'unlock tower door'}
-     when (/cast/)                    { say 'cast OBJECT' }
-     when (/cast|use|go/)             { say 'cast fishingpole'   or say 'cast fishing pole' }
-     when (/jump/)                    { say 'you can only jump out of a tree' }
-     when (/sit/)                     { say 'sit on OBJECT'; sit($player,$ra_words) }
-     when (/kiss/)                    { say 'kiss CHARACTER' }
-     when (/feed/)                    { say 'feed CHARACTER OBJECT' }
-     when (/give/)                    { say 'give CHARACTER OBJECT' or say 'give OBJECT to CHARACTER' }
-     when (/light/)                   { say 'light OBJECT' }
-     when (/wear/)                    { say 'wear OBJECT' }
-     when (/smell/)                   { say 'wear OBJECT' }
-     when (/pickup|drop|throw/)       { say 'use OBJECT' }
-     when (/fight|attack|punch|kill/) { say 'fight CHARACTER' }
-     when (/whack|hit/)               { say 'hit CHARACTER with OBJECT' }
-     default                          { say 'Thats not fair' }
+     if    (/exit/)                    { say 'exit';         $player->game_over(); }
+     elsif (/move/)                    { say 'move DIRECTION'; move($player,$ra_words);}
+     elsif (/take/)                    { say 'take OBJECT from CHARACTER' }
+     elsif (/unlock/)                  { say 'unlock tower door'}
+     elsif (/cast/)                    { say 'cast OBJECT' }
+     elsif (/cast|use|go/)             { say 'cast fishingpole'   or say 'cast fishing pole' }
+     elsif (/jump/)                    { say 'you can only jump out of a tree' }
+     elsif (/sit/)                     { say 'sit on OBJECT'; sit($player,$ra_words) }
+     elsif (/kiss/)                    { say 'kiss CHARACTER' }
+     elsif (/feed/)                    { say 'feed CHARACTER OBJECT' }
+     elsif (/give/)                    { say 'give CHARACTER OBJECT' or say 'give OBJECT to CHARACTER' }
+     elsif (/light/)                   { say 'light OBJECT' }
+     elsif (/wear/)                    { say 'wear OBJECT' }
+     elsif (/smell/)                   { say 'wear OBJECT' }
+     elsif (/pickup|drop|throw/)       { say 'use OBJECT' }
+     elsif (/fight|attack|punch|kill/) { say 'fight CHARACTER' }
+     elsif (/whack|hit/)               { say 'hit CHARACTER with OBJECT' }
+     else                              { say 'Thats not fair' }
   }
   return;
 } 
