@@ -32,22 +32,50 @@ sub brute_parse {
      elsif (/take/)                    { say 'take OBJECT from CHARACTER' }
      elsif (/unlock/)                  { say 'unlock tower door'}
      elsif (/cast/)                    { say 'cast OBJECT' }
-     elsif (/cast|use|go/)             { say 'cast fishingpole'   or say 'cast fishing pole' }
+     elsif (/cast|use|go/)             { say 'cast fishpole' }
      elsif (/jump/)                    { say 'you can only jump out of a tree' }
      elsif (/sit/)                     { say 'sit on OBJECT'; sit($player,$ra_words) }
      elsif (/kiss/)                    { say 'kiss CHARACTER' }
      elsif (/feed/)                    { say 'feed CHARACTER OBJECT' }
      elsif (/give/)                    { say 'give CHARACTER OBJECT' or say 'give OBJECT to CHARACTER' }
-     elsif (/light/)                   { say 'light OBJECT' }
+     elsif (/light/)                   { say 'light OBJECT'; light($player, $ra_words) }
      elsif (/wear/)                    { say 'wear OBJECT' }
      elsif (/smell/)                   { say 'wear OBJECT' }
-     elsif (/pickup|drop|throw/)       { say 'use OBJECT' }
+     elsif (/pickup|drop|throw/)       { say 'use OBJECT'; pickup($player, $ra_words) }
      elsif (/fight|attack|punch|kill/) { say 'fight CHARACTER' }
      elsif (/whack|hit/)               { say 'hit CHARACTER with OBJECT' }
      else                              { say 'Thats not fair' }
   }
   return;
 } 
+
+sub light {
+   my ($player, $ra_words) = @_;
+   if ( not (scalar @$ra_words) == 2 ) {
+      $player->announce('your LIGHT sentence sux'); return;
+   }
+
+   if ( not ($player->has_item($$ra_words[1]) ) ) {
+      $player->announce('you do not have that item'); return;
+   }
+   $player->get_item_object($$ra_words[1])->use_action('light');
+   return;
+
+}
+
+sub pickup {
+   my ($player, $ra_words) = @_;
+   if ( not (scalar @$ra_words) == 2 ) {
+      $player->announce('your PICKUP sentence sux'); return;
+   }
+
+   if (not ($player->location_object->has_item($$ra_words[1]) ) ) {
+      $player->announce('Location does not have that'); return;
+   }
+
+   $player->location_object->put_item($$ra_words[1], $player);
+   return;
+}
 
 sub move { # ex. move north
    my ($player, $ra_words) = @_;
@@ -57,7 +85,6 @@ sub move { # ex. move north
 
    # will Adventure->player->announce('There is no exit named '.$exit.'.')
    $player->location_object->use_exit($$ra_words[1]);
-
    return;
 }
 
@@ -72,64 +99,6 @@ sub sit {  # ex. sit on throne
       $player->announce('Location does not have that'); return;
    }
 
-   # perform
    $player->location_object->get_actor($$ra_words[2])->use_action($$ra_words[0]);
-
-   return;
-
-   $player->location_object->put_item('fishpole', $player);
-   $player->location_object->use_exit('Out');
-   $player->location_object->use_exit('North');
-   $player->location_object->use_exit('Up');
-   $player->location_object->put_item('branch', $player);
-   $player->location_object->use_exit('Down');
-   $player->location_object->use_exit('South');
-   $player->location_object->use_exit('South');
-   $player->location_object->use_action('fish');
-   $player->location_object->use_exit('North');
-   $player->location_object->use_exit('North');
-   $player->location_object->use_exit('East');
-   Adventure->get_actor('troll')->use_action('give troll fish');
-   $player->location_object->use_exit('East');
-   Adventure->get_actor('guard')->use_action('hit guard with branch');
-   $player->location_object->get_actor('koguard')->put_item('key', $player);
-   $player->location_object->use_exit('East');
-   $player->location_object->put_item('candle', $player);
-   $player->location_object->use_exit('West');
-   $player->location_object->use_exit('Down');
-   $player->get_item_object('unlitlamp')->use_action('light');
-   $player->location_object->use_exit('Down');
-   $player->get_item_object('candle')->use_action('light');
-   $player->location_object->put_item('crown', $player);
-   $player->location_object->use_exit('Up');
-   $player->location_object->use_exit('Up');
-   $player->location_object->use_exit('Up');
-   $player->location_object->use_exit('Up');
-   $player->get_item_object('key')->use_action('unlock tower door');
-   $player->location_object->use_exit('Up');
-   $player->location_object->get_actor('sadprincess')->use_action('give rose');
-
-   $player->location_object->get_actor('happyprincess')->use_action('marry');
-   $player->location_object->use_exit('Down');
-   $player->location_object->use_exit('Down');
-   $player->location_object->use_exit('East');
-   $player->location_object->use_exit('East');
-#   $player->location_object->get_actor('throne')->use_action('sit');
- 
-
-   say $player->location;
-
-   if (not ($player->location_object->has_actor($$ra_words[2]) ) ) {
-      $player->announce('Location does not have that'); return;
-   }
-
-   # find out if 'sit' is an available action for this actor
-   if ( not ($player->location_object->get_actor($$ra_words[2])->has_action($$ra_words[0]) ) ) {
-      $player->announce('your SIT sentence sux'); return;
-   }
-
-   # perform
-   $player->location_object->get_actor($$ra_words[2])->use_action($$ra_words[0]);
-
    return;
 }
