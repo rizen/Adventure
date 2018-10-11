@@ -44,40 +44,89 @@ use Ouch;
 #}
 
 sub cmd_attack { 
+   # guard: attack, punch
    my ($this, $game, $player, $ra_words) = @_;
-   say 'fight CHARACTER';
+   say 'attack Actor';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   $$ra_words[0] = 'fight';
+   $this->fight( $game, $player, $ra_words);
+   return;
+}
+
+sub fight {
+   my ($this, $game, $player, $ra_words) = @_;
+   if (not ($player->location_object->has_actor($$ra_words[1]) ) ) {
+      $player->announce("Location does not have that:" . $$ra_words[1]); return;
+   }
+   $player->location_object->get_actor($$ra_words[1])->use_action("fight $$ra_words[1]");
    return;
 }
 
 sub cmd_fight  { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'fight CHARACTER';
+   say 'fight Actor';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   $this->fight( $game, $player, $ra_words);
    return;
 }
 sub cmd_punch  { 
+   # guard: attack, punch
    my ($this, $game, $player, $ra_words) = @_;
-   say 'fight CHARACTER';
+   say 'punch/fight Actor';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   $$ra_words[0] = 'fight';
+   $this->fight( $game, $player, $ra_words);
    return;
 }
+
 sub cmd_kill   { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'fight CHARACTER';
+   say 'kill/fight Actor';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   $$ra_words[0] = 'fight';
+   $this->fight( $game, $player, $ra_words);
    return;
 }
 
 sub cmd_cast   { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'cast fishpole';
+#   say 'cast fishpole';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[2] sentence sux"); return;
+   }
+   if ( not ($player->has_item($$ra_words[1]) ) ) {
+      $player->announce('you do not have that item'); return;
+   }
+   $player->location_object->use_action('fish');
    return;
 }
 sub cmd_go     { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'go fishing';
+#   say 'go fishing';
+   if ( not ((scalar @$ra_words) == 2) ) {
+      $player->announce("your \u${$ra_words}[2] sentence sux"); return;
+   }
+   if ($$ra_words[1] ne 'fishing') {
+      $player->announce("You can only 'go fishing' with a fishpole"); return;
+   }
+   if ( not ($player->has_item('fishpole')) ) {
+      $player->announce('you do not have that item'); return;
+   }
+   $player->location_object->use_action('fish');
    return;
 }
 sub cmd_use    { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'cast fishpole';
+#   say 'use fishpole';
+   $this->cmd_cast( $game, $player, $ra_words);
    return;
 }
 
@@ -90,25 +139,64 @@ sub cmd_exit   {
 
 sub cmd_feed   { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'feed CHARACTER OBJECT';
+#   say 'feed CHARACTER OBJECT';
+   if ( not ((scalar @$ra_words) == 3) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   if (not ($player->location_object->has_actor($$ra_words[1]) ) ) {
+      $player->announce("Location does not have that:" . $$ra_words[1]); return;
+   }
+   if ( not ($player->has_item($$ra_words[2]) ) ) {
+      $player->announce('you do not have that item'); return;
+   }
+   my $str1 = "$$ra_words[1] $$ra_words[2]";
+   my $str2 = "give $str1";
+#   my $ra = Adventure->get_actor($$ra_words[1])->available_actions;
+   my $ra = $game->get_actor($$ra_words[1])->available_actions;
+ 
+#   my $rc = Adventure->get_actor($$ra_words[1])->has_action($str2);
+
+#   if (not(Adventure->get_actor($$ra_words[1])->has_action($str2))) {
+   if (not($game->get_actor($$ra_words[1])->has_action($str2))) {
+      $player->announce("There is NO action named feed $str1"); return;
+   }
+#   Adventure->get_actor($$ra_words[1])->use_action('give troll fish');
+#   Adventure->get_actor($$ra_words[1])->use_action($str2);
+   $game->get_actor($$ra_words[1])->use_action($str2);
    return;
 }
 
 sub cmd_give   { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'give CHARACTER OBJECT  OR  give OBJECT to CHARACTER';
+   $$ra_words[0] = 'feed';
+   $this->cmd_feed($game, $player, $ra_words);
    return;
 }
 
 sub cmd_hit    { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'hit CHARACTER with OBJECT';
+   if ( not ((scalar @$ra_words) == 4) ) {
+      $player->announce("your \u${$ra_words}[0] sentence sux"); return;
+   }
+   if (not ($player->location_object->has_actor($$ra_words[1]) ) ) {
+      $player->announce("Location does not have that:" . $$ra_words[1]); return;
+   }
+   if ( not ($player->has_item($$ra_words[3]) ) ) {
+      $player->announce('you do not have that item'); return;
+   }
+   my $str = "hit $$ra_words[1] with $$ra_words[3]";
+   $game->get_actor('guard')->use_action($str);
+   $player->location_object->get_actor('koguard')->put_item('key', $player);
    return;
 }
 
 sub cmd_whack  { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'hit CHARACTER with OBJECT';
+   $$ra_words[0] = 'hit';
+   $this->cmd_hit($game, $player, $ra_words);
    return;
 }
 
@@ -127,7 +215,7 @@ sub cmd_kiss   {
 sub cmd_light  { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'light OBJECT'; 
-   if ( not (scalar @$ra_words) == 2 ) {
+   if ( not ((scalar @$ra_words) == 2) ) {
       $player->announce('your LIGHT sentence sux'); return;
    }
 
@@ -140,24 +228,32 @@ sub cmd_light  {
 
 sub cmd_move   { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'move DIRECTION'; 
-   if ( not (scalar @$ra_words) == 2 ) {
+#   say 'move DIRECTION'; 
+   if ( not ((scalar @$ra_words) == 2) ) {
       $player->announce('your MOVE sentence sux'); return;
    }
 
    # will Adventure->player->announce('There is no exit named '.$exit.'.')
    #
    # JT empowered the 'directions' to be first letter upper case
-   # in the yaml definition and did not want use to change it!???
+   # in the yaml definition and did not want use to change it!?
    # This is not a bug. Its a FEATURE.
+   #
    $player->location_object->use_exit("\u$$ra_words[1]");
+   say 'you are at the ', $player->location;
    return; 
 }
 
+sub cmd_cd {
+   my ($this, $game, $player, $ra_words) = @_;
+   $this->cmd_move($game, $player, $ra_words);
+}
+
+
 sub cmd_pickup { 
    my ($this, $game, $player, $ra_words) = @_;
-   say 'pickup OBJECT'; 
-   if ( not (scalar @$ra_words) == 2 ) {
+#   say 'pickup OBJECT'; 
+   if ( not ((scalar @$ra_words) == 2) ) {
       $player->announce('your PICKUP sentence sux'); return;
    }
 
@@ -182,14 +278,30 @@ sub cmd_drop   {
 
 sub cmd_show   {
    my ($this, $game, $player, $ra_words) = @_;
-   say 'show stuff';
+   say 'show all';
+   # NOT DONE
+   say "I have : ";
+   $player->display_inventory;
+   say '';
+   say 'Location: ', $player->location;
+   print "   Items-: "; 
+   for (keys %{$player->location_object->items}) { print; }
+   say '';
+   say "   Exits-: ", "@{$player->location_object->available_exits}";
+   say "   Actors: ", "@{$player->location_object->actors}";
+   return;
+}
+
+sub cmd_ls   {
+   my ($this, $game, $player, $ra_words) = @_;
+   $this->cmd_show($game, $player, $ra_words);
    return;
 }
 
 sub cmd_sit    { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'sit on OBJECT'; 
-   if ( not (scalar @$ra_words) == 3 ) {
+   if ( not ((scalar @$ra_words) == 3) ) {
       $player->announce('your SIT sentence sux'); return;
    }
 
@@ -216,12 +328,20 @@ sub cmd_take   {
 sub cmd_unlock { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'unlock tower door';
+    $player->get_item_object('key')->use_action('unlock tower door');
    return;
 }
 
 sub cmd_wear   { 
    my ($this, $game, $player, $ra_words) = @_;
    say 'wear OBJECT';
+   return;
+}
+
+sub cmd_marry   { 
+   my ($this, $game, $player, $ra_words) = @_;
+   say 'marry CHARACTER';
+   $player->location_object->get_actor('happyprincess')->use_action('marry');
    return;
 }
 

@@ -101,7 +101,7 @@ sub display_score {
 sub display_inventory {
     my $self = shift;
     foreach my $key (keys %{$self->items}) {
-        $self->announce($self->items->{$key}. ' '. Adventure->items->{$key}->name);
+        $self->announce($key . ': ' . $self->items->{$key} . '~'. Adventure->items->{$key}->name);
     }
 }
 
