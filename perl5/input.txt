@@ -1,0 +1,40 @@
+pickup fishpole
+move out
+take rose from bush
+move north
+move up
+pickup branch
+move down
+move south
+move south
+go fishing
+move north
+move north
+move east
+feed troll branch
+feed troll fish
+move east
+aattack guard
+hit guard with branch
+take key from koguard
+move east
+pickup candle
+move west
+move down
+light unlitlamp
+move down
+light candle
+pickup crown
+move up
+move up
+move up
+unlock tower door
+move up
+give sadprincess rose
+marry happyprincess
+move down
+move down
+move east
+move east
+sit on throne
+exit
