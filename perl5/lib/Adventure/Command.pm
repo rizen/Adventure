@@ -62,7 +62,7 @@ sub ActorHasAction { my ( $game, $player, $character, $action ) = @_;
    return 0;
 }
 
-sub ItemActorAtLocation { my ( $player, $item ) = @_;
+sub ActorHasItemAtLocation { my ( $player, $item ) = @_;
    return 1 if ($player->location_object->has_actor($item) );
    $player->announce("Location does not have that $item");
    return 0;
@@ -335,7 +335,7 @@ sub cmd_sit { my ($this, $game, $player, $ra_words) = @_;
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
 
-   return if ( not (ItemActorAtLocation($player, $item))); 
+   return if ( not (ActorHasItemAtLocation($player, $item))); 
 
    $player->location_object->get_actor($item)->use_action($cmd);
    return;
@@ -366,7 +366,7 @@ sub cmd_unlock { my ($this, $game, $player, $ra_words) = @_;
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
 
-   return if ( not (ItemActorAtLocation($player, $item))); 
+   return if ( not (ActorHasItemAtLocation($player, $item))); 
 
    $player->get_item_object('key')->use_action("$cmd $location $item");
    return;
