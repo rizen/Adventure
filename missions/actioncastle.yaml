@@ -1,6 +1,10 @@
 ---
 name: Action Castle
 namespace : ActionCastle
+welcome: 
+   - | 
+    A voice BOOOOMS out. 
+    Welcome to ActionCastle.
 locations:
     cottage:
         name: Cottage

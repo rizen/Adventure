@@ -155,6 +155,10 @@ sub get_actor {
     return $class->actors->{$key};
 }
 
+sub welcome {
+    return $_config->{welcome};
+}
+
 
 
 

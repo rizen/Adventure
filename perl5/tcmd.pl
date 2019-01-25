@@ -9,6 +9,9 @@ use Adventure::Command;
 Adventure->init('../missions/actioncastle.yaml');
 my $player = Adventure->player;
 
+say @{Adventure->welcome};
+say   $player->location_object->description;
+
 while (<>) {
    chomp;
    $_ = lc;
