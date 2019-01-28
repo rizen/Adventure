@@ -159,6 +159,10 @@ sub welcome {
     return $_config->{welcome};
 }
 
+sub help {
+    return $_config->{help};
+}
+
 
 
 

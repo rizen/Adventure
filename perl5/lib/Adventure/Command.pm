@@ -301,12 +301,17 @@ sub cmd_pickup { my ($this, $game, $player, $ra_words) = @_;
 }
 
 sub cmd_throw { my ($this, $game, $player, $ra_words) = @_;
-   say 'pickup OBJECT';
+   say 'throw OBJECT';
    return;
 }
 sub cmd_drop { my ($this, $game, $player, $ra_words) = @_;
    say 'drop OBJECT';
    return;
+}
+
+sub cmd_help { my ($this, $game, $player, $ra_words) = @_;
+   say '';
+   say @{$game->help};
 }
 
 sub cmd_show { my ($this, $game, $player, $ra_words) = @_;

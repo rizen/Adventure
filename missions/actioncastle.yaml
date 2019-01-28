@@ -5,6 +5,22 @@ welcome:
    - | 
     A voice BOOOOMS out. 
     Welcome to ActionCastle.
+help: 
+   - | 
+    attack ACTOR                           cast fishpole
+    drop OBJECT                            exit
+    feed CHARACTER OBJECT                  fight ACTOR
+    give ACTOR OBJECT               or     give OBJECT to ACTOR
+    hit ACTOR with OBJECT                  jump
+    kill ACTOR                             kiss ACTOR
+    light OBJECT                           marry ACTOR
+    move DIRECTION                         pickup OBJECT
+    punch ACTOR
+    show INVENTORY|ITEMS|EXITS|ACTORS|ALL
+    sit on OBJECT                          smell OBJECT
+    take OBJECT from ACTOR                 throw OBJECT
+    unlock tower door                      use fishpole
+    wear OBJECT                            whack ACTOR with OBJECt
 locations:
     cottage:
         name: Cottage
