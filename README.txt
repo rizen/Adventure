@@ -8,7 +8,7 @@ At the current time
        help     # list of commands
        show     # shows all current info INVENTORY|ITEMS|EXITS|ACTORS
 
-For a map of ActionCastle game. Those developers forget what their doing after a time off the gig.
+For a map of ActionCastle game. Those developers forget what their doing after a time off from the gig.
    perl5/ActionCastleMap.pdf
 
 Current testing via non t\*.t files
@@ -21,6 +21,7 @@ To test commands in a certain location in the game
    $ vi my-new-stuff.txt
 
    # with the dash, '-', you're telling perl you want to input more stuff to the game
+   # via the game prompt.
    $ perl  tcmd.pl  my-new-stuff.txt  -
 
 Enjoy!
