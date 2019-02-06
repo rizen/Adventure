@@ -90,7 +90,7 @@ sub PlayerHasItem { my ( $player, $item ) = @_;
 sub cmd_attack { my ($this, $game, $player, $ra_words) = @_; 
    # guard: attack, punch
    my ($cmd, $character) = @{$ra_words};
-   say 'attack Actor';
+#   say 'attack Actor';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
 
@@ -110,7 +110,7 @@ sub fight { my ($this, $game, $player, $ra_words) = @_;
 
 sub cmd_fight { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $character) = @{$ra_words};
-   say 'fight Actor';
+#   say 'fight Actor';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
 
@@ -121,7 +121,7 @@ sub cmd_fight { my ($this, $game, $player, $ra_words) = @_;
 sub cmd_punch { my ($this, $game, $player, $ra_words) = @_;
    # guard: attack, punch
    my ($cmd, $character) = @{$ra_words};
-   say 'punch/fight Actor';
+#   say 'punch/fight Actor';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
 
@@ -132,7 +132,7 @@ sub cmd_punch { my ($this, $game, $player, $ra_words) = @_;
 
 sub cmd_kill { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $character) = @{$ra_words};
-   say 'kill/fight Actor';
+#   say 'kill/fight Actor';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
 
@@ -146,9 +146,7 @@ sub cmd_cast { my ($this, $game, $player, $ra_words) = @_;
 #   say 'cast fishpole';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
-
    return if ( not (PlayerHasItem($player,$object)));
-
    $player->location_object->use_action('fish');
    return;
 }
@@ -165,6 +163,7 @@ sub cmd_go { my ($this, $game, $player, $ra_words) = @_;
 
    return if ( not (PlayerHasItem($player, 'fishpole')));
 
+   say 'You cast your Propeel Pocket Fishmen';
    $player->location_object->use_action('fish');
    return;
 }
@@ -185,9 +184,7 @@ sub cmd_feed { my ($this, $game, $player, $ra_words) = @_;
 #   say 'feed CHARACTER OBJECT';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
-
    return if ( not (ActorAtLocation($player, $character))); 
-
    return if ( not (PlayerHasItem($player,$item)));
 
    my $str1 = "$character $item";
@@ -196,18 +193,17 @@ sub cmd_feed { my ($this, $game, $player, $ra_words) = @_;
    if ( not($game->get_actor($character)->has_action($str2))) {
       $player->announce("There is NO action named feed $str1"); return;
    }
+   say "You have feed the $character a $item";
    $game->get_actor($character)->use_action($str2);
    return;
 }
 
 sub cmd_give { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $character, $item) = @{$ra_words};
-   say 'give CHARACTER OBJECT  OR  give OBJECT to CHARACTER';
+#   say 'give CHARACTER OBJECT  OR  give OBJECT to CHARACTER';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
-
    return if ( not (ActorAtLocation($player, $character))); 
-
    return if ( not (PlayerHasItem($player,$item)));
 
    my $str = "give $item";
@@ -220,7 +216,7 @@ sub cmd_give { my ($this, $game, $player, $ra_words) = @_;
 
 sub cmd_hit { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $character, $dummy, $item) = @{$ra_words};
-   say 'hit CHARACTER with OBJECT';
+#   say 'hit CHARACTER with OBJECT';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 4)));
 
@@ -238,30 +234,41 @@ sub cmd_hit { my ($this, $game, $player, $ra_words) = @_;
 }
 
 sub cmd_whack { my ($this, $game, $player, $ra_words) = @_;
-   say 'hit CHARACTER with OBJECT';
+#   say 'hit CHARACTER with OBJECT';
    $$ra_words[0] = 'hit';
    $this->cmd_hit($game, $player, $ra_words);
    return;
 }
 
 sub cmd_jump { my ($this, $game, $player, $ra_words) = @_;
-   say 'you can only jump out of a tree';
+#   say 'you can only jump out of a tree';
+   my ($cmd) = @{$ra_words};
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 1)));
+
+   if (not ($player->location eq 'tree')) {
+      say 'You are not in a tree';
+      return;
+   }
+
+   $player->location_object->use_action('jump');
    return;
 }
 
 sub cmd_kiss { my ($this, $game, $player, $ra_words) = @_;
-   say 'kiss CHARACTER';
+#   say 'kiss CHARACTER';
+   my ($cmd, $character) = @{$ra_words};
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
+   return if ( not (ActorAtLocation($player, $character))); 
+   $game->get_actor($character)->use_action($cmd);
    return;
 }
 
 sub cmd_light { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $item) = @{$ra_words};
-   say 'light OBJECT'; 
+#   say 'light OBJECT'; 
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
-
    return if ( not (PlayerHasItem($player,$item)));
-
    $player->get_item_object($item)->use_action('light');
    return;
 }
@@ -293,19 +300,25 @@ sub cmd_pickup { my ($this, $game, $player, $ra_words) = @_;
 #   say 'pickup OBJECT'; 
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
-
    return if ( not (LocationHasItem($player,$item)) );
-
    $player->location_object->put_item($item, $player);
    return;
 }
 
 sub cmd_throw { my ($this, $game, $player, $ra_words) = @_;
    say 'throw OBJECT';
+   my ($cmd, $item) = @{$ra_words};
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
+   return if ( not (PlayerHasItem($player,$item)));
+   $player->get_item_object($item)->use_action($cmd);
    return;
 }
 sub cmd_drop { my ($this, $game, $player, $ra_words) = @_;
    say 'drop OBJECT';
+   my ($cmd, $item) = @{$ra_words};
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
+   return if ( not (PlayerHasItem($player,$item)));
+   $player->get_item_object($item)->use_action($cmd);
    return;
 }
 
@@ -339,29 +352,29 @@ sub cmd_sit { my ($this, $game, $player, $ra_words) = @_;
    say 'sit on OBJECT'; 
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
-
    return if ( not (ActorHasItemAtLocation($player, $item))); 
-
    $player->location_object->get_actor($item)->use_action($cmd);
    return;
 }
 
 sub cmd_smell { my ($this, $game, $player, $ra_words) = @_;
    say 'smell OBJECT';
+   my ($cmd, $item) = @{$ra_words};
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
+   return if ( not (ActorHasItemAtLocation($player, $item))); 
+   $player->location_object->get_actor($item)->use_action($cmd);
    return;
 }
 
 sub cmd_take { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $item, $dummy, $character) = @{$ra_words};
-   say 'take OBJECT from CHARACTER'; 
+#   say 'take OBJECT from CHARACTER'; 
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 4)));
-
    return if ( not (ActorAtLocation($player, $character))); 
-
    return if ( not (ActorHasItem($game, $player, $character, $item)));
-
    $player->location_object->get_actor($character)->put_item($item, $player);
+   say "You have taken a $item";
    return;
 }
 
@@ -370,29 +383,29 @@ sub cmd_unlock { my ($this, $game, $player, $ra_words) = @_;
    say 'unlock tower door';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 3)));
-
    return if ( not (ActorHasItemAtLocation($player, $item))); 
-
    $player->get_item_object('key')->use_action("$cmd $location $item");
    return;
 }
 
 sub cmd_wear { my ($this, $game, $player, $ra_words) = @_;
    say 'wear OBJECT';
+   my ($cmd, $item) = @{$ra_words};
+
+   return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
+   return if ( not (ActorHasItemAtLocation($player, $item))); 
+   $player->location_object->put_item($item, $player);
    return;
 }
 
 sub cmd_marry { my ($this, $game, $player, $ra_words) = @_;
    my ($cmd, $character) = @{$ra_words};
-   say 'marry CHARACTER';
 
    return if ( not (CorrectLengthOfCmd($player, $cmd, $ra_words, 2)));
-
    return if ( not (ActorAtLocation($player, $character))); 
-
-   return if ( not (ActorHasAction( $game, $player, $character, 'marry')));
-
-   $player->location_object->get_actor($character)->use_action('marry');
+   return if ( not (ActorHasAction( $game, $player, $character, $cmd)));
+   say "You pitch wo to $character";
+   $player->location_object->get_actor($character)->use_action($cmd);
    return;
 }
 
